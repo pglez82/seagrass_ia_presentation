@@ -10,7 +10,7 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds, fit, calc, shadows}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, shapes.arrows, backgrounds, fit, calc, shadows}
 
 % ----------------------------------------------------------------------
 % Custom Oceanic Color Palette
@@ -118,59 +118,88 @@
 % SLIDE 4: THE CENTRAL PLOT: The Three Eras of AI in Seagrass Mapping
 % ======================================================================
 \begin{frame}{The Central Evolution: Three Eras of Marine AI}
-  \begin{center}
+  \centering
   \begin{tikzpicture}[
     scale=0.88, every node/.style={transform shape},
-    box/.style={rectangle, rounded corners=5pt, text width=4.3cm, minimum height=3.6cm, inner sep=6pt, align=left, drop shadow},
-    arrow/.style={-{Stealth[scale=1.1]}, line width=2pt, color=OceanDark!60}
+    card/.style={
+      rectangle, rounded corners=6pt,
+      minimum width=4.3cm, text width=4.1cm, minimum height=3.9cm,
+      inner sep=6pt, align=left, drop shadow={opacity=0.25, shadow xshift=2pt, shadow yshift=-2pt}
+    },
+    chevron/.style={
+      single arrow, draw=OceanTeal!90, fill=OceanTeal!30, line width=1.1pt,
+      minimum height=0.95cm, minimum width=0.46cm,
+      single arrow head extend=2mm, inner sep=0pt,
+      drop shadow={opacity=0.2, shadow xshift=1pt, shadow yshift=-1pt}
+    }
   ]
-    % Era 1 Box
-    \node[box, fill=OceanMedium!12, draw=OceanMedium, line width=1.1pt] (era1) at (0, 0.7) {
-      \textbf{\normalsize Era 1: Pixel-by-Pixel}\\[2pt]
-      \textit{\scriptsize The Spectral Paradigm (2000--2018)}\\[5pt]
-      \footnotesize
-      $\bullet$ \textbf{Input:} 1D vector $\mathbf{x} \in \mathbb{R}^B$\\[2pt]
-      $\bullet$ \textbf{Physics:} Lyzenga DII, Stumpf ratios\\[2pt]
-      $\bullet$ \textbf{Models:} MLC, SVM, Random Forest\\[2pt]
-      $\bullet$ \textbf{Limit:} Blind to spatial context\\[2pt]
-      $\bullet$ Heavy salt-and-pepper noise
+    % Era 1 Card
+    \node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.25) {
+      {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Spectral Paradigm (2000--2018)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} 1D spectral vector $\mathbf{x} \in \mathbb{R}^B$\\[2.5pt]
+      $\bullet$ \textbf{Context:} None ($0\%$, pixel-blind)\\[2.5pt]
+      $\bullet$ \textbf{Physics:} Lyzenga DII, Stumpf ratios\\[2.5pt]
+      $\bullet$ \textbf{Classifiers:} MLC, SVM, RF\\[2.5pt]
+      $\bullet$ \textbf{Limitation:} Salt-and-pepper noise
     };
 
-    % Era 2 Box
-    \node[box, fill=SeagrassGreen!12, draw=SeagrassGreen, line width=1.1pt] (era2) at (5.2, 0.7) {
-      \textbf{\normalsize Era 2: Deep Learning}\\[2pt]
-      \textit{\scriptsize The Spatial Context Paradigm (2018--2023)}\\[5pt]
-      \footnotesize
-      $\bullet$ \textbf{Input:} 2D/3D tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2pt]
-      $\bullet$ \textbf{Context:} CNN receptive fields, ASPP\\[2pt]
-      $\bullet$ \textbf{Models:} U-Net, DeepLabv3+, SegFormer\\[2pt]
-      $\bullet$ Crisp meadow edges \& textures\\[2pt]
-      $\bullet$ \textbf{Limit:} Massive manual labeling
+    % Era 2 Card
+    \node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.25) {
+      {\centering \textbf{\small Era 2: Deep Learning}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Spatial Context Paradigm (2018--2023)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} Tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2.5pt]
+      $\bullet$ \textbf{Context:} Receptive field, ASPP\\[2.5pt]
+      $\bullet$ \textbf{Features:} Texture \& continuity\\[2.5pt]
+      $\bullet$ \textbf{Classifiers:} U-Net, DeepLabv3+\\[2.5pt]
+      $\bullet$ \textbf{Limitation:} Dense masks required
     };
 
-    % Era 3 Box
-    \node[box, fill=OceanTeal!12, draw=OceanTeal, line width=1.1pt] (era3) at (10.4, 0.7) {
-      \textbf{\normalsize Era 3: Foundation Models}\\[2pt]
-      \textit{\scriptsize The Self-Supervised Era (2023--Present)}\\[5pt]
-      \footnotesize
-      $\bullet$ \textbf{Input:} Multi-modal latent tokens\\[2pt]
-      $\bullet$ \textbf{Pre-training:} Self-Supervised (SSL / MAE)\\[2pt]
-      $\bullet$ \textbf{Models:} Prithvi, OceanMAE, SAM\\[2pt]
-      $\bullet$ Minimal downstream annotations\\[2pt]
-      $\bullet$ Zero/few-shot promptability
+    % Era 3 Card
+    \node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.25) {
+      {\centering \textbf{\small Era 3: Foundation Models}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Self-Supervised Paradigm (2023+)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} Latent token embeddings\\[2.5pt]
+      $\bullet$ \textbf{Context:} Global planetary priors\\[2.5pt]
+      $\bullet$ \textbf{Pre-training:} Unlabeled archives\\[2.5pt]
+      $\bullet$ \textbf{Models:} Prithvi, OceanMAE, SAM\\[2.5pt]
+      $\bullet$ \textbf{Supervision:} Few-shot adaptation
     };
 
-    % Arrows
-    \draw[arrow] (era1.east) -- (era2.west);
-    \draw[arrow] (era2.east) -- (era3.west);
+    % High-impact graphical chevron arrows between cards
+    \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west)$) {};
+    \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west)$) {};
 
-    % Evolution annotations below era2
-    \node[align=center, font=\scriptsize\bfseries, color=OceanDark, below=0.35cm of era2] (annot) {
-      $\xrightarrow{\hspace{4.2cm}}$ Increasing Spatial \& Semantic Context $\xrightarrow{\hspace{4.2cm}}$\\[4pt]
-      $\xleftarrow{\hspace{4.2cm}}$ Decreasing Dependence on Dense In Situ Labels $\xleftarrow{\hspace{4.2cm}}$
+    % Clean pill badges above chevrons
+    \node[font=\tiny\bfseries, color=OceanMedium, fill=white, draw=OceanMedium!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
+      at ($(arrow1) + (0, 0.65)$) {+ Context};
+    \node[font=\tiny\bfseries, color=OceanTeal, fill=white, draw=OceanTeal!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
+      at ($(arrow2) + (0, 0.65)$) {+ Pre-train};
+
+    % Bottom Infographic Ribbon 1: Increasing Context (pointing right)
+    \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, -1.30) rectangle (12.1, -0.90);
+    \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, -0.75) -- (12.7, -1.10) -- (12.1, -1.45) -- cycle;
+    \node[font=\footnotesize\bfseries, color=white] at (5.1, -1.10) {
+      Increasing Spatial \& Semantic Context \quad $\boldsymbol{\xrightarrow{\hspace{1.2cm}}}$
     };
+
+    % Bottom Infographic Ribbon 2: Decreasing Label Dependency (pointing left)
+    \fill[CoralAccent, rounded corners=3pt, drop shadow={opacity=0.2}] (-1.4, -1.95) rectangle (12.7, -1.55);
+    \fill[CoralAccent, drop shadow={opacity=0.2}] (-1.4, -1.40) -- (-2.0, -1.75) -- (-1.4, -2.10) -- cycle;
+    \node[font=\footnotesize\bfseries, color=white] at (5.5, -1.75) {
+      $\boldsymbol{\xleftarrow{\hspace{1.2cm}}}$ \quad Decreasing Dependence on Dense In Situ Labels (Few-Shot / Zero-Shot)
+    };
+
   \end{tikzpicture}
-  \end{center}
 \end{frame}
 
 % ======================================================================
