@@ -307,70 +307,97 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 8: Era 2: Deep Learning & Spatial Context (Visualized)
+% SLIDE 8: Era 2: Why Spatial Context Matters (Pixel vs Patch)
 % ======================================================================
-\begin{frame}{Era 2: Exploiting Spatial Context via Deep Learning}
-  \begin{center}
-  \small
-  \begin{tabular}{ccc}
-    \textbf{(a) Observation (Drone/Sat)} & \textbf{(b) Era 1: Pixel Classifier (Noise)} & \textbf{(c) Era 2: Deep Learning (U-Net)} \\
-    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_input.png} &
-    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_pixel_rf.png} &
-    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_unet.png}
-  \end{tabular}
-  \end{center}
-  \vspace{-0.1cm}
+\begin{frame}{Era 2: Why Spatial Context Matters --- From Pixels to Patches}
+  \centering
+  \includegraphics[width=\textwidth, height=3.55cm, keepaspectratio]{figures/pixel_vs_patch_context.png}
+  
+  \vspace{0.15cm}
   \begin{columns}[T]
-    \begin{column}{0.50\textwidth}
-      \textbf{From Vectors to 2D/3D Tensors:}
-      \begin{equation*}
-        \mathbf{x} \in \mathbb{R}^B \quad \xrightarrow{\quad\text{Shift}\quad} \quad \mathbf{X} \in \mathbb{R}^{H \times W \times B}
-      \end{equation*}
+    \begin{column}{0.48\textwidth}
+      \textbf{The Single Pixel Dilemma (Era 1):}
       \begin{itemize}
-        \item Kernels exploit \textbf{spatial autocorrelation} (Tobler's First Law of Geography).
+        \item Isolated spectral vector $\mathbf{x} \in \mathbb{R}^B$ has severe class overlap (seagrass vs. macroalgae vs. shadow).
+        \item Zero structural awareness $\rightarrow$ random salt-and-pepper noise.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{Native Spatial Regularization}
-        Receptive fields capture edge continuity natively: no salt-and-pepper noise, coherent patch boundaries.
-      \end{exampleblock}
+      \textbf{The Convolutional Revolution (Era 2):}
+      \begin{itemize}
+        \item Spatial patch $\mathbf{X}$ exposes ribbon morphology, leaf texture, and substrate contrast.
+        \item CNN kernels ($W * \mathbf{X} + b$) natively learn spatial patterns, regularizing habitat boundaries.
+      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
 % ======================================================================
-% SLIDE 9: Semantic Segmentation Architectures
+% SLIDE 9: From Patch Classification to Dense Segmentation (U-Net)
 % ======================================================================
-\begin{frame}{Semantic Segmentation Architectures in Action}
+\begin{frame}{From Patch Classification to Dense Segmentation (U-Net)}
+  \centering
+  \begin{tikzpicture}[scale=0.84, every node/.style={transform shape}]
+    % Blocks Level 1
+    \node[draw=OceanDark, fill=OceanDark!15, minimum width=0.85cm, minimum height=1.4cm, rounded corners=3pt] (e1) at (0.4, 0) {\scriptsize $H \times W$};
+    \node[draw=SeagrassGreen, fill=SeagrassGreen!15, minimum width=0.85cm, minimum height=1.4cm, rounded corners=3pt] (d1) at (8.4, 0) {\scriptsize $H \times W$};
+
+    % Group Labels above Level 1
+    \node[above=0.12cm of e1, font=\footnotesize\bfseries, color=OceanDark] {Encoder};
+    \node[above=0.12cm of d1, font=\footnotesize\bfseries, color=SeagrassGreen] {Decoder};
+
+    % Input & Output
+    \node[left=0.25cm of e1, font=\scriptsize\bfseries, color=OceanDark, align=right] (in_lbl) {Input\\Tile};
+    \draw[->, >=stealth, thick, OceanDark] (in_lbl) -- (e1);
+
+    \node[right=0.25cm of d1, font=\scriptsize\bfseries, color=SeagrassGreen, align=left] (out_lbl) {Benthic\\Mask};
+    \draw[->, >=stealth, thick, SeagrassGreen] (d1) -- (out_lbl);
+
+    % Blocks Level 2
+    \node[draw=OceanDark, fill=OceanDark!30, minimum width=0.85cm, minimum height=1.0cm, rounded corners=3pt] (e2) at (2.2, -0.75) {\scriptsize $\frac{H}{2} \times \frac{W}{2}$};
+    \node[draw=SeagrassGreen, fill=SeagrassGreen!30, minimum width=0.85cm, minimum height=1.0cm, rounded corners=3pt] (d2) at (6.6, -0.75) {\scriptsize $\frac{H}{2} \times \frac{W}{2}$};
+
+    % Bottleneck
+    \node[draw=OceanDark, fill=OceanDark!85, text=white, minimum width=1.6cm, minimum height=0.6cm, rounded corners=3pt] (b) at (4.4, -1.45) {\scriptsize\bfseries Bottleneck};
+
+    % Downsampling arrows
+    \draw[->, >=stealth, thick, OceanDark] (e1.south) |- (e2.west);
+    \node[font=\tiny\bfseries, color=OceanDark, above] at (1.3, -0.75) {Pool $\downarrow$};
+    \draw[->, >=stealth, thick, OceanDark] (e2.south) |- (b.west);
+
+    % Upsampling arrows
+    \draw[->, >=stealth, thick, SeagrassGreen] (b.east) -| (d2.south);
+    \draw[->, >=stealth, thick, SeagrassGreen] (d2.east) -| (d1.south);
+    \node[font=\tiny\bfseries, color=SeagrassGreen, above] at (7.5, -0.75) {Up $\uparrow$};
+
+    % Straight Skip Connections
+    \draw[->, >=stealth, line width=1.1pt, dashed, CoralAccent] (e1.east) -- node[above=1pt, font=\scriptsize\bfseries, color=CoralAccent] {Skip Connection: Transfers crisp spatial edges \& anchor scars} (d1.west);
+    \draw[->, >=stealth, line width=1.1pt, dashed, CoralAccent] (e2.east) -- node[above=1pt, font=\tiny\bfseries, color=CoralAccent] {Skip Connection} (d2.west);
+  \end{tikzpicture}
+
+  \vspace{0.1cm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \textbf{U-Net \& ResU-Net Architectures:}
+      \textbf{Why Not Sliding Patch CNNs?}
       \begin{itemize}
-        \item Symmetrical Encoder-Decoder with \textbf{skip connections}.
-        \item Preserves fine spatial details from early layers:
-        \begin{itemize}
-          \item Resolves narrow meadow channels
-          \item Pinpoints maritime anchor scars
-          \item Accurate meadow edge delineation
-        \end{itemize}
+        \item High redundancy: sliding windows pixel-by-pixel is slow.
+        \item Coarse borders: cannot trace crisp meadow fringes.
       \end{itemize}
-      \vspace{0.15cm}
-      \textbf{Vision Transformers (SegFormer):}
+      \textbf{Fully Convolutional Shift (U-Net):}
       \begin{itemize}
-        \item Global self-attention across large satellite tiles without losing fine boundaries.
+        \item Direct end-to-end mapping: $H \times W$ tile $\rightarrow$ $H \times W$ mask in one forward pass.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{DeepLabv3+ (Atrous Convolutions):}
+      \textbf{Skip Connections are Decisive:}
       \begin{itemize}
-        \item \textbf{Atrous Spatial Pyramid Pooling (ASPP):}
-        Multi-dilation rate kernels capture context at multiple spatial scales.
-        \item Crucial for seagrass: simultaneously captures vast continuous meadows (\textit{macro}) and isolated patch colonies (\textit{micro}).
+        \item Bridges fine spatial coordinates directly across to deep semantic representations.
+        \item Resolves narrow sand channels and anchor damage scars!
       \end{itemize}
-      \vspace{0.15cm}
-      \begin{block}{Proven Performance Gain}
-        Consistently yields $+8\text{--}15\%$ Overall Accuracy and significantly higher Boundary F1-scores over Random Forest.
-      \end{block}
+      \textbf{Multi-Scale Context (DeepLabv3+):}
+      \begin{itemize}
+        \item ASPP captures both vast meadows and sparse colonies.
+      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
