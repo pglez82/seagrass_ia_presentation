@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{amsmath,amssymb}
 \usepackage{microtype}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds, fit, calc, shadows}
 
@@ -56,7 +57,7 @@
 % ======================================================================
 % SLIDE 1: Title
 % ======================================================================
-\begin{frame}
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
@@ -68,23 +69,20 @@
     \begin{column}{0.54\textwidth}
       \textbf{Why Seagrasses Matter:}
       \begin{itemize}
-        \item \textbf{Global Blue Carbon Sinks:} \textit{Posidonia oceanica} accumulates millenary organic deposits (\textit{matte}) storing carbon $>30\times$ faster than tropical rainforests.
-        \item \textbf{Coastal Protection:} Dampens wave energy, prevents shoreline erosion, stabilizes seabed sediments.
-        \item \textbf{Biodiversity Hotspots:} Priority habitat under EU Habitats Directive (1120*) \& Marine Strategy Framework Directive (MSFD).
+        \item \textbf{Global Blue Carbon Sinks:} \textit{Posidonia oceanica} deposits (\textit{matte}) store carbon $>30\times$ faster than tropical rainforests.
+        \item \textbf{Coastal Protection:} Dampens wave energy, stabilizes sediments.
+        \item \textbf{Biodiversity Hotspots:} Priority habitat under EU Habitats Directive (1120*) \& MSFD.
       \end{itemize}
+      \vspace{0.1cm}
+      \begin{alertblock}{The Operational Bottleneck}
+        Diver transects and research vessels are \textbf{costly, localized, and temporally sparse}.
+      \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
-      \begin{alertblock}{The Operational Bottleneck}
-        Traditional monitoring relies on:
-        \begin{itemize}
-          \item Scientific scuba diving \& transects
-          \item Research vessel campaigns
-          \item Grab sampling \& towed sleds
-        \end{itemize}
-        $\Rightarrow$ \textbf{Extremely costly, spatially sparse, and temporally disjoint.}
-      \end{alertblock}
-      \vspace{0.1cm}
       \centering
+      \includegraphics[width=\linewidth, height=3.3cm, keepaspectratio]{figures/posidonia_underwater.jpg}\\[3pt]
+      \textit{\scriptsize Healthy \textit{Posidonia oceanica} meadow in clear Mediterranean waters.}
+      \vspace{0.2cm}
       \textit{\footnotesize How can AI turn sparse observation into continuous, operational monitoring?}
     \end{column}
   \end{columns}
@@ -94,29 +92,26 @@
 % SLIDE 3: The Multi-Source Data Landscape
 % ======================================================================
 \begin{frame}{The Multi-Source Remote Sensing Landscape}
-  \begin{center}
-  \resizebox{0.98\textwidth}{!}{
-  \begin{tabular}{lcccc}
-    \toprule
-    \textbf{Sensor / Platform} & \textbf{Spatial Res.} & \textbf{Revisit} & \textbf{Depth Limit} & \textbf{Primary Operational Role} \\
-    \midrule
-    \textbf{Satellites} (Sentinel-2, Landsat) & 10--20\,m & 5 days & $\sim$15--20\,m (clear) & Basin-scale continuous monitoring; historical time-series ($>30$ yrs). \\
-    \addlinespace[3pt]
-    \textbf{High-Res Sat.} (PlanetScope, WorldView) & 0.3--3\,m & Daily to on-demand & $\sim$20--25\,m & Marine Protected Areas; anchor scars, localized degradation. \\
-    \addlinespace[3pt]
-    \textbf{Drones (UAVs)} (RGB, Multispectral) & 1--5\,cm & On-demand & 0--10\,m & Meadow boundaries, shoot density proxies, shallow fringe dynamics. \\
-    \addlinespace[3pt]
-    \textbf{Underwater Vision} (ROV/AUV, Drop-cam) & Millimetric & Campaign & Localized & In situ ground truth, health status (epiphytes, necrosis), invasive algae. \\
-    \addlinespace[3pt]
-    \textbf{Acoustics} (MBES, Side-Scan Sonar) & Decimetric & Campaign & Full depth ($>35$\,m) & Turbid waters and deep limits beyond the optical photic zone. \\
-    \bottomrule
-  \end{tabular}
-  }
-  \end{center}
-  \vspace{0.2cm}
-  \begin{block}{Complementary Synergy}
-    No single sensor solves the entire problem: Satellite provides the \textbf{synoptic scale}, drones provide the \textbf{canopy texture}, and underwater/acoustic sensors provide the \textbf{ground truth and lower boundary}.
-  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{figures/sensing_platforms.jpg}\\[3pt]
+      \textit{\scriptsize Multi-tier observation: Satellites, Drones, Vessels, \& Seafloor.}
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \textbf{Complementary Sensor Roles:}
+      \begin{itemize}
+        \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
+        {\footnotesize Synoptic, basin-scale coverage; 5-day revisit; historical archives ($>30$ yrs).}
+        \item \textbf{Drones (UAVs):}\newline
+        {\footnotesize Centimetric detail (1--5\,cm); patch fragmentation, shoot density proxies, shallow fringes.}
+        \item \textbf{Underwater Vision (ROV/AUV):}\newline
+        {\footnotesize Millimetric in situ validation; species health (epiphytes, necrosis), invasive algae.}
+        \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
+        {\footnotesize Deep limits ($>35$\,m) and turbid waters beyond optical photic penetration.}
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % ======================================================================
@@ -283,42 +278,32 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 8: Era 2: Deep Learning & Spatial Context
+% SLIDE 8: Era 2: Deep Learning & Spatial Context (Visualized)
 % ======================================================================
 \begin{frame}{Era 2: Exploiting Spatial Context via Deep Learning}
+  \begin{center}
+  \small
+  \begin{tabular}{ccc}
+    \textbf{(a) Observation (Drone/Sat)} & \textbf{(b) Era 1: Pixel Classifier (Noise)} & \textbf{(c) Era 2: Deep Learning (U-Net)} \\
+    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_input.png} &
+    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_pixel_rf.png} &
+    \includegraphics[width=0.30\textwidth, height=2.2cm]{figures/panel_unet.png}
+  \end{tabular}
+  \end{center}
+  \vspace{-0.1cm}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.50\textwidth}
       \textbf{From Vectors to 2D/3D Tensors:}
       \begin{equation*}
         \mathbf{x} \in \mathbb{R}^B \quad \xrightarrow{\quad\text{Shift}\quad} \quad \mathbf{X} \in \mathbb{R}^{H \times W \times B}
       \end{equation*}
       \begin{itemize}
-        \item Convolutional kernels exploit \textbf{spatial autocorrelation} (Tobler's First Law of Geography).
-        \item Receptive fields capture:
-        \begin{itemize}
-          \item Low-level: leaf/canopy spectral gradients
-          \item Mid-level: patch texture, density, edges
-          \item High-level: geomorphological context (bathymetric slope, proximity to coast/sand)
-        \end{itemize}
+        \item Kernels exploit \textbf{spatial autocorrelation} (Tobler's First Law of Geography).
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{center}
-      \begin{tikzpicture}[scale=0.85]
-        % Pixel input
-        \draw[fill=OceanMedium!30, draw=OceanMedium, line width=1pt] (0, 1.8) rectangle (1.2, 3.0);
-        \node at (0.6, 2.4) {\footnotesize 1 Pixel};
-        \node[right] at (1.4, 2.4) {\footnotesize $\Rightarrow$ Spectral only};
-
-        % Patch input
-        \draw[fill=SeagrassGreen!25, draw=SeagrassGreen, line width=1pt] (0, -0.6) rectangle (2.2, 1.2);
-        \draw[step=0.44cm, gray!50, very thin] (0, -0.6) grid (2.2, 1.2);
-        \node at (1.1, 0.3) {\footnotesize Patch ($H \times W$)};
-        \node[right] at (2.4, 0.3) {\footnotesize $\Rightarrow$ Texture + Context};
-      \end{tikzpicture}
-      \end{center}
-      \begin{exampleblock}{The Breakthrough}
-        Spatial regularization happens \textbf{natively} inside the network: no salt-and-pepper noise, coherent patch boundaries.
+      \begin{exampleblock}{Native Spatial Regularization}
+        Receptive fields capture edge continuity natively: no salt-and-pepper noise, coherent patch boundaries.
       \end{exampleblock}
     \end{column}
   \end{columns}
@@ -396,25 +381,31 @@
 % ======================================================================
 \begin{frame}{Era 3: The Marine Label Bottleneck}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.50\textwidth}
       \begin{alertblock}{The Supervised AI Paradox}
-        Deep Learning is notoriously data-hungry, but \textbf{marine ground-truth is exceptionally scarce}:
+        Deep Learning is data-hungry, but \textbf{marine ground-truth is exceptionally scarce}:
         \begin{itemize}
           \item Oceanographic ship time: \textbf{€5,000--€20,000 / day}.
-          \item Scientific scuba diving is depth-limited and covers only meters.
-          \item High label ambiguity: Differentiating sparse seagrass on rock from turf algae is challenging even for marine biologists.
+          \item Diving is depth-limited and covers only meters.
+          \item Label ambiguity: Differentiating sparse seagrass on rock from turf algae is challenging.
         \end{itemize}
       \end{alertblock}
+      \vspace{0.1cm}
+      $\Rightarrow$ 99.9\% of available marine imagery is \textbf{unlabeled}.
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{The Emerging Paradigm:}
-      \begin{itemize}
-        \item How can we train deep models when 99.9\% of available satellite, drone, and underwater footage is \textbf{unlabeled}?
-        \item $\Rightarrow$ \textbf{Self-Supervised Learning (SSL) \& Foundation Models}.
-      \end{itemize}
-      \vspace{0.15cm}
-      \begin{exampleblock}{The Core SSL Idea}
-        Learn generic optical, spatial, and semantic priors from massive unlabeled archives \textbf{before} seeing a single marine label.
+      \begin{center}
+      \scriptsize
+      \begin{tabular}{ccc}
+        \textbf{1. Scene} & \textbf{2. Masked (75\%)} & \textbf{3. Reconstructed} \\
+        \includegraphics[width=0.30\linewidth]{figures/mae_input.png} &
+        \includegraphics[width=0.30\linewidth]{figures/mae_masked.png} &
+        \includegraphics[width=0.30\linewidth]{figures/mae_recon.png}
+      \end{tabular}
+      \end{center}
+      \vspace{-0.1cm}
+      \begin{exampleblock}{Self-Supervised Learning (SSL)}
+        Masked Autoencoders (MAE) learn robust spatial-spectral priors directly from unannotated ocean scenes.
       \end{exampleblock}
     \end{column}
   \end{columns}
@@ -549,31 +540,30 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 16: Environmental & Optical Drivers of Shift
+% SLIDE 16: Environmental & Optical Drivers of Shift (Visualized)
 % ======================================================================
 \begin{frame}{Real-World Drivers of Shift in Marine Ecosystems}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth, height=3.8cm, keepaspectratio]{figures/dataset_shift_comparison.jpg}\\[2pt]
+      \textit{\scriptsize Summer (Clear / Dense Canopy) vs. Winter (Turbid / Dead Matte).}
+    \end{column}
+    \begin{column}{0.50\textwidth}
       \begin{block}{1. Environmental \& Phenological Shifts}
         \begin{itemize}
-          \item \textbf{Turbidity surges:} Storms, runoff, resuspension alter attenuation coefficients ($k$).
-          \item \textbf{CDOM \& Chlorophyll:} Seasonal phytoplankton blooms alter the blue/green absorption profile.
+          \item \textbf{Turbidity surges:} Storms alter light attenuation ($k$).
           \item \textbf{Phenology:} Summer leaf growth vs. winter canopy collapse \& exposed \textit{matte}.
-          \item \textbf{Sea surface state:} Variable wave glint, foam, and refraction lenses.
+          \item \textbf{CDOM \& Blooms:} Shift blue/green absorption.
         \end{itemize}
       \end{block}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{alertblock}{2. Sensor \& Geographic Domain Shifts}
+      \vspace{0.05cm}
+      \begin{alertblock}{2. Sensor \& Domain Shifts}
         \begin{itemize}
-          \item \textbf{Sensor SRFs:} Sentinel-2 MSI vs. PlanetScope Dove vs. Landsat-8/9 OLI.
-          \item \textbf{Acquisition Geometry:} Solar zenith angle, tidal height, sun glint patterns.
-          \item \textbf{Geographic Migration:} Hyper-oligotrophic waters (Balearic Islands) vs. turbid Atlantic Rías or coastal lagoons (Mar Menor).
+          \item \textbf{Sensor SRFs:} Sentinel-2 vs. PlanetScope vs. UAV.
+          \item \textbf{Geography:} Balearics vs. turbid Atlantic Rías.
         \end{itemize}
       \end{alertblock}
-      \vspace{0.1cm}
-      \centering
-      \textit{\footnotesize Models calibrated in June in Formentera face severe distribution shifts by December in Galicia.}
     \end{column}
   \end{columns}
 \end{frame}
