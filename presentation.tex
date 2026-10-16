@@ -1,0 +1,675 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% ----------------------------------------------------------------------
+% Theme & Typography
+% ----------------------------------------------------------------------
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, backgrounds, fit, calc, shadows}
+
+% ----------------------------------------------------------------------
+% Custom Oceanic Color Palette
+% ----------------------------------------------------------------------
+\definecolor{OceanDark}{RGB}{11, 37, 69}       % Deep Navy / Abyssal
+\definecolor{OceanMedium}{RGB}{19, 64, 116}    % Oceanic Blue
+\definecolor{OceanTeal}{RGB}{0, 119, 145}      % Mediterranean Teal
+\definecolor{SeagrassGreen}{RGB}{34, 112, 70}  % Posidonia Foliage
+\definecolor{CoralAccent}{RGB}{217, 83, 79}     % Coral / Alert red-orange
+\definecolor{BgLight}{RGB}{250, 251, 252}      % Clean white-gray
+
+% Apply colors to Metropolis
+\setbeamercolor{normal text}{fg=OceanDark, bg=BgLight}
+\setbeamercolor{alerted text}{fg=CoralAccent}
+\setbeamercolor{example text}{fg=SeagrassGreen}
+\setbeamercolor{frametitle}{fg=white, bg=OceanDark}
+\setbeamercolor{title separator}{fg=OceanTeal}
+\setbeamercolor{progress bar}{fg=OceanTeal, bg=OceanDark!20}
+\setbeamercolor{block title}{fg=white, bg=OceanMedium}
+\setbeamercolor{block body}{fg=OceanDark, bg=OceanMedium!10}
+\setbeamercolor{block title alerted}{fg=white, bg=CoralAccent}
+\setbeamercolor{block body alerted}{fg=OceanDark, bg=CoralAccent!10}
+\setbeamercolor{block title example}{fg=white, bg=SeagrassGreen}
+\setbeamercolor{block body example}{fg=OceanDark, bg=SeagrassGreen!10}
+
+% Slide numbering
+\setbeamertemplate{frame numbering}[fraction]
+
+% ----------------------------------------------------------------------
+% Presentation Metadata
+% ----------------------------------------------------------------------
+\title{Artificial Intelligence Applied to the Mapping and Monitoring of Seagrass Meadows}
+\subtitle{From Classical Pixels to Foundation Models --- and the Challenge of Dataset Shift}
+\author{\textbf{Pablo González}$^{1}$ \and \textbf{Fernando García-González}$^{2}$}
+\institute{
+  $^{1}$Artificial Intelligence Center (AIC), Universidad de Oviedo\\
+  $^{2}$Instituto Español de Oceanografía (IEO-CSIC)
+}
+\date{CartoGrass Workshop --- 2026}
+
+% ----------------------------------------------------------------------
+\begin{document}
+
+% ======================================================================
+% SLIDE 1: Title
+% ======================================================================
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ======================================================================
+% SLIDE 2: Ecological Value & The Monitoring Bottleneck
+% ======================================================================
+\begin{frame}{The Ecological Imperative \& The Monitoring Bottleneck}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Why Seagrasses Matter:}
+      \begin{itemize}
+        \item \textbf{Global Blue Carbon Sinks:} \textit{Posidonia oceanica} accumulates millenary organic deposits (\textit{matte}) storing carbon $>30\times$ faster than tropical rainforests.
+        \item \textbf{Coastal Protection:} Dampens wave energy, prevents shoreline erosion, stabilizes seabed sediments.
+        \item \textbf{Biodiversity Hotspots:} Priority habitat under EU Habitats Directive (1120*) \& Marine Strategy Framework Directive (MSFD).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{alertblock}{The Operational Bottleneck}
+        Traditional monitoring relies on:
+        \begin{itemize}
+          \item Scientific scuba diving \& transects
+          \item Research vessel campaigns
+          \item Grab sampling \& towed sleds
+        \end{itemize}
+        $\Rightarrow$ \textbf{Extremely costly, spatially sparse, and temporally disjoint.}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \centering
+      \textit{\footnotesize How can AI turn sparse observation into continuous, operational monitoring?}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 3: The Multi-Source Data Landscape
+% ======================================================================
+\begin{frame}{The Multi-Source Remote Sensing Landscape}
+  \begin{center}
+  \resizebox{0.98\textwidth}{!}{
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Sensor / Platform} & \textbf{Spatial Res.} & \textbf{Revisit} & \textbf{Depth Limit} & \textbf{Primary Operational Role} \\
+    \midrule
+    \textbf{Satellites} (Sentinel-2, Landsat) & 10--20\,m & 5 days & $\sim$15--20\,m (clear) & Basin-scale continuous monitoring; historical time-series ($>30$ yrs). \\
+    \addlinespace[3pt]
+    \textbf{High-Res Sat.} (PlanetScope, WorldView) & 0.3--3\,m & Daily to on-demand & $\sim$20--25\,m & Marine Protected Areas; anchor scars, localized degradation. \\
+    \addlinespace[3pt]
+    \textbf{Drones (UAVs)} (RGB, Multispectral) & 1--5\,cm & On-demand & 0--10\,m & Meadow boundaries, shoot density proxies, shallow fringe dynamics. \\
+    \addlinespace[3pt]
+    \textbf{Underwater Vision} (ROV/AUV, Drop-cam) & Millimetric & Campaign & Localized & In situ ground truth, health status (epiphytes, necrosis), invasive algae. \\
+    \addlinespace[3pt]
+    \textbf{Acoustics} (MBES, Side-Scan Sonar) & Decimetric & Campaign & Full depth ($>35$\,m) & Turbid waters and deep limits beyond the optical photic zone. \\
+    \bottomrule
+  \end{tabular}
+  }
+  \end{center}
+  \vspace{0.2cm}
+  \begin{block}{Complementary Synergy}
+    No single sensor solves the entire problem: Satellite provides the \textbf{synoptic scale}, drones provide the \textbf{canopy texture}, and underwater/acoustic sensors provide the \textbf{ground truth and lower boundary}.
+  \end{block}
+\end{frame}
+
+% ======================================================================
+% SLIDE 4: THE CENTRAL PLOT: The Three Eras of AI in Seagrass Mapping
+% ======================================================================
+\begin{frame}{The Central Evolution: Three Eras of Marine AI}
+  \begin{center}
+  \begin{tikzpicture}[
+    scale=0.88, every node/.style={transform shape},
+    box/.style={rectangle, rounded corners=5pt, text width=4.3cm, minimum height=3.6cm, inner sep=6pt, align=left, drop shadow},
+    arrow/.style={-{Stealth[scale=1.1]}, line width=2pt, color=OceanDark!60}
+  ]
+    % Era 1 Box
+    \node[box, fill=OceanMedium!12, draw=OceanMedium, line width=1.1pt] (era1) at (0, 0.7) {
+      \textbf{\normalsize Era 1: Pixel-by-Pixel}\\[2pt]
+      \textit{\scriptsize The Spectral Paradigm (2000--2018)}\\[5pt]
+      \footnotesize
+      $\bullet$ \textbf{Input:} 1D vector $\mathbf{x} \in \mathbb{R}^B$\\[2pt]
+      $\bullet$ \textbf{Physics:} Lyzenga DII, Stumpf ratios\\[2pt]
+      $\bullet$ \textbf{Models:} MLC, SVM, Random Forest\\[2pt]
+      $\bullet$ \textbf{Limit:} Blind to spatial context\\[2pt]
+      $\bullet$ Heavy salt-and-pepper noise
+    };
+
+    % Era 2 Box
+    \node[box, fill=SeagrassGreen!12, draw=SeagrassGreen, line width=1.1pt] (era2) at (5.2, 0.7) {
+      \textbf{\normalsize Era 2: Deep Learning}\\[2pt]
+      \textit{\scriptsize The Spatial Context Paradigm (2018--2023)}\\[5pt]
+      \footnotesize
+      $\bullet$ \textbf{Input:} 2D/3D tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2pt]
+      $\bullet$ \textbf{Context:} CNN receptive fields, ASPP\\[2pt]
+      $\bullet$ \textbf{Models:} U-Net, DeepLabv3+, SegFormer\\[2pt]
+      $\bullet$ Crisp meadow edges \& textures\\[2pt]
+      $\bullet$ \textbf{Limit:} Massive manual labeling
+    };
+
+    % Era 3 Box
+    \node[box, fill=OceanTeal!12, draw=OceanTeal, line width=1.1pt] (era3) at (10.4, 0.7) {
+      \textbf{\normalsize Era 3: Foundation Models}\\[2pt]
+      \textit{\scriptsize The Self-Supervised Era (2023--Present)}\\[5pt]
+      \footnotesize
+      $\bullet$ \textbf{Input:} Multi-modal latent tokens\\[2pt]
+      $\bullet$ \textbf{Pre-training:} Self-Supervised (SSL / MAE)\\[2pt]
+      $\bullet$ \textbf{Models:} Prithvi, OceanMAE, SAM\\[2pt]
+      $\bullet$ Minimal downstream annotations\\[2pt]
+      $\bullet$ Zero/few-shot promptability
+    };
+
+    % Arrows
+    \draw[arrow] (era1.east) -- (era2.west);
+    \draw[arrow] (era2.east) -- (era3.west);
+
+    % Evolution annotations below era2
+    \node[align=center, font=\scriptsize\bfseries, color=OceanDark, below=0.35cm of era2] (annot) {
+      $\xrightarrow{\hspace{4.2cm}}$ Increasing Spatial \& Semantic Context $\xrightarrow{\hspace{4.2cm}}$\\[4pt]
+      $\xleftarrow{\hspace{4.2cm}}$ Decreasing Dependence on Dense In Situ Labels $\xleftarrow{\hspace{4.2cm}}$
+    };
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+% SLIDE 5: Era 1: Pixel-by-Pixel Classification
+% ======================================================================
+\begin{frame}{Era 1: The Classical Pixel-by-Pixel Workflow}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Core Assumption:}
+      \begin{itemize}
+        \item Each pixel vector $\mathbf{x} = [b_1, b_2, \dots, b_B]^T$ is treated as an independent statistical sample.
+        \item The spatial coordinates $(i,j)$ are ignored.
+      \end{itemize}
+      \vspace{0.15cm}
+      \textbf{Water Column Correction (WCC):}
+      \begin{itemize}
+        \item \textbf{Lyzenga (1981):} Depth-Invariant Index (DII)
+        \begin{equation*}
+          DII_{ij} = \ln(R_i) - \left[\frac{k_i}{k_j}\right] \ln(R_j)
+        \end{equation*}
+        \item \textbf{Stumpf et al. (2003):} Pseudo-bathymetry ratio $\ln(n R_i) / \ln(n R_j)$.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Traditional Classifiers}
+        \begin{itemize}
+          \item \textbf{Maximum Likelihood (MLC):} Multivariate Gaussian assumption per benthic class.
+          \item \textbf{Support Vector Machines (SVM):} Maximum-margin kernel hyperplanes.
+          \item \textbf{Random Forest (RF):} Ensemble of decision trees; the dominant baseline.
+        \end{itemize}
+      \end{block}
+      \vspace{0.1cm}
+      \small Standard pipeline: Sentinel-2/Landsat + field points $\rightarrow$ Random Forest pixel classification.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 6: Era 1 in Practice: Achievements & Scale
+% ======================================================================
+\begin{frame}{Era 1 in Practice: Scaling to Regional Basins}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \textbf{The Cloud Computing Breakthrough:}
+      \begin{itemize}
+        \item Integration of \textbf{Google Earth Engine (GEE)} with Sentinel-2 MSI open-access data.
+        \item First automated, basin-scale attempts to map Mediterranean \textit{Posidonia oceanica} meadows.
+        \item \textbf{Key Works:}
+        \begin{itemize}
+          \item \textit{Traganos \& Reinartz (2018):} Mapping Aegean seagrasses using GEE, Sentinel-2, SVM, and RF.
+          \item \textit{Poursanidis et al. (2018):} Delineating coastal habitats and lower depth limits across Greek waters.
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \begin{exampleblock}{Key Achievements of Era 1}
+        \begin{itemize}
+          \item Showed feasibility of regional satellite mapping without costly aircraft.
+          \item Demonstrated usefulness of open Copernicus Sentinel data.
+          \item Provided first national baseline estimates of coastal seagrass extents.
+        \end{itemize}
+      \end{exampleblock}
+      \vspace{0.2cm}
+      \centering
+      \small \textit{Yet, operational managers noted significant discrepancies on the ground...}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 7: Why Era 1 Hit a Ceiling (Limitations)
+% ======================================================================
+\begin{frame}{Why Era 1 Hit a Plateau: The Pixel Bottleneck}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{1. Complete Spatial Blindness}
+        A single pixel has zero context:
+        \begin{itemize}
+          \item Cannot tell dark rock/algae from dense seagrass.
+          \item Produces heavy \textbf{``salt-and-pepper''} noise.
+        \end{itemize}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \begin{alertblock}{2. The Mixed Pixel Dilemma}
+        At 10--20\,m resolution:
+        \begin{itemize}
+          \item Boundary pixels mix canopy, sand, and dead \textit{matte}.
+          \item Hard classifiers force a wrong binary choice.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{3. Sensitivity to Water Perturbations}
+        \begin{itemize}
+          \item Wave lenses, sun glint, and turbidity spikes distort single-pixel spectra.
+          \item Models hallucinate spurious meadow loss/gain.
+        \end{itemize}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \begin{block}{Ad-Hoc Filters Failed}
+        Morphological post-filtering (median filters) blurred real meadow borders and erased small patches.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 8: Era 2: Deep Learning & Spatial Context
+% ======================================================================
+\begin{frame}{Era 2: Exploiting Spatial Context via Deep Learning}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{From Vectors to 2D/3D Tensors:}
+      \begin{equation*}
+        \mathbf{x} \in \mathbb{R}^B \quad \xrightarrow{\quad\text{Shift}\quad} \quad \mathbf{X} \in \mathbb{R}^{H \times W \times B}
+      \end{equation*}
+      \begin{itemize}
+        \item Convolutional kernels exploit \textbf{spatial autocorrelation} (Tobler's First Law of Geography).
+        \item Receptive fields capture:
+        \begin{itemize}
+          \item Low-level: leaf/canopy spectral gradients
+          \item Mid-level: patch texture, density, edges
+          \item High-level: geomorphological context (bathymetric slope, proximity to coast/sand)
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.85]
+        % Pixel input
+        \draw[fill=OceanMedium!30, draw=OceanMedium, line width=1pt] (0, 1.8) rectangle (1.2, 3.0);
+        \node at (0.6, 2.4) {\footnotesize 1 Pixel};
+        \node[right] at (1.4, 2.4) {\footnotesize $\Rightarrow$ Spectral only};
+
+        % Patch input
+        \draw[fill=SeagrassGreen!25, draw=SeagrassGreen, line width=1pt] (0, -0.6) rectangle (2.2, 1.2);
+        \draw[step=0.44cm, gray!50, very thin] (0, -0.6) grid (2.2, 1.2);
+        \node at (1.1, 0.3) {\footnotesize Patch ($H \times W$)};
+        \node[right] at (2.4, 0.3) {\footnotesize $\Rightarrow$ Texture + Context};
+      \end{tikzpicture}
+      \end{center}
+      \begin{exampleblock}{The Breakthrough}
+        Spatial regularization happens \textbf{natively} inside the network: no salt-and-pepper noise, coherent patch boundaries.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 9: Semantic Segmentation Architectures
+% ======================================================================
+\begin{frame}{Semantic Segmentation Architectures in Action}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \textbf{U-Net \& ResU-Net Architectures:}
+      \begin{itemize}
+        \item Symmetrical Encoder-Decoder with \textbf{skip connections}.
+        \item Preserves fine spatial details from early layers:
+        \begin{itemize}
+          \item Resolves narrow meadow channels
+          \item Pinpoints maritime anchor scars
+          \item Accurate meadow edge delineation
+        \end{itemize}
+      \end{itemize}
+      \vspace{0.15cm}
+      \textbf{Vision Transformers (SegFormer):}
+      \begin{itemize}
+        \item Global self-attention across large satellite tiles without losing fine boundaries.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{DeepLabv3+ (Atrous Convolutions):}
+      \begin{itemize}
+        \item \textbf{Atrous Spatial Pyramid Pooling (ASPP):}
+        Multi-dilation rate kernels capture context at multiple spatial scales.
+        \item Crucial for seagrass: simultaneously captures vast continuous meadows (\textit{macro}) and isolated patch colonies (\textit{micro}).
+      \end{itemize}
+      \vspace{0.15cm}
+      \begin{block}{Proven Performance Gain}
+        Consistently yields $+8\text{--}15\%$ Overall Accuracy and significantly higher Boundary F1-scores over Random Forest.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 10: Deep Learning Across Scales: Drones & Underwater
+% ======================================================================
+\begin{frame}{Deep Learning Beyond Satellites: Drones \& Robotics}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \textbf{UAV / Drone Photogrammetry + CNNs:}
+      \begin{itemize}
+        \item Centimetric orthomosaics + Digital Surface Models (DSM).
+        \item U-Net applied to quantify:
+        \begin{itemize}
+          \item Patch perimeter-to-area fragmentation ratios
+          \item Direct proxy for shoot density
+          \item Beached necromass (\textit{banquettes}) volume
+        \end{itemize}
+        \item \textit{Ventura et al. (2022); Montero-Hidalgo et al. (2023)}.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Underwater Vision (ROV / AUV):}
+      \begin{itemize}
+        \item Automated benthic photoquadrat segmentation.
+        \item Differentiating live \textit{Posidonia} from \textbf{dead matte} (critical for blue carbon audits).
+        \item Detecting invasive alien macroalgae (\textit{Rugulopteryx okamurae}, \textit{Caulerpa cylindracea}).
+        \item \textbf{Color Restoration Pre-processing:} Sea-thru algorithm (Akkaynak \& Treibitz, CVPR 2019) reverses underwater light attenuation.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 11: Era 3: The Label Scarcity Dilemma
+% ======================================================================
+\begin{frame}{Era 3: The Marine Label Bottleneck}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{The Supervised AI Paradox}
+        Deep Learning is notoriously data-hungry, but \textbf{marine ground-truth is exceptionally scarce}:
+        \begin{itemize}
+          \item Oceanographic ship time: \textbf{€5,000--€20,000 / day}.
+          \item Scientific scuba diving is depth-limited and covers only meters.
+          \item High label ambiguity: Differentiating sparse seagrass on rock from turf algae is challenging even for marine biologists.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{The Emerging Paradigm:}
+      \begin{itemize}
+        \item How can we train deep models when 99.9\% of available satellite, drone, and underwater footage is \textbf{unlabeled}?
+        \item $\Rightarrow$ \textbf{Self-Supervised Learning (SSL) \& Foundation Models}.
+      \end{itemize}
+      \vspace{0.15cm}
+      \begin{exampleblock}{The Core SSL Idea}
+        Learn generic optical, spatial, and semantic priors from massive unlabeled archives \textbf{before} seeing a single marine label.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 12: Foundation Models & Self-Supervised Learning
+% ======================================================================
+\begin{frame}{Foundation Models in Remote Sensing \& Marine Vision}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \textbf{1. Earth Observation Foundation Models:}
+      \begin{itemize}
+        \item \textbf{SatMAE \& Prithvi (NASA/IBM):} Masked Autoencoders trained on multispectral satellite imagery.
+        \item \textbf{Clay Foundation Model (2024):} Multi-sensor representation learning.
+        \item \textbf{OceanMAE / Hydro (2024--2025):} Specifically pre-trained on global water bodies, encoding aquatic radiative transfer priors.
+      \end{itemize}
+      \vspace{0.1cm}
+      $\Rightarrow$ Fine-tune with only \textbf{tens} of field points instead of thousands!
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{2. Biological \& Promptable Vision:}
+      \begin{itemize}
+        \item \textbf{BioCLIP (CVPR 2024):} Vision-language model trained on \textit{TreeOfLife-10M} across 450,000+ species; zero-shot recognition of marine taxa.
+        \item \textbf{Segment Anything (SAM) \& MarineSAM:} Promptable interactive segmentation (bounding box or single click) accelerating expert annotation by $10\times$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 13: Summary Comparison of the Three Eras
+% ======================================================================
+\begin{frame}{The Three Eras: A Comparative Synthesis}
+  \begin{center}
+  \resizebox{0.98\textwidth}{!}{
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Dimension} & \textbf{Era 1: Pixel-by-Pixel} & \textbf{Era 2: Deep Learning} & \textbf{Era 3: Foundation Models} \\
+    \midrule
+    \textbf{Data Representation} & 1D vector $\mathbf{x} \in \mathbb{R}^B$ & 2D/3D patch $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$ & Multi-modal latent tokens \\
+    \addlinespace[3pt]
+    \textbf{Spatial Context} & Completely blind ($0\%$) & Local receptive field (CNN/ViT) & Global contextual priors \\
+    \addlinespace[3pt]
+    \textbf{Label Dependency} & Moderate (per-pixel points) & Extremely high (dense masks) & \textbf{Very low} (few-shot / linear probe) \\
+    \addlinespace[3pt]
+    \textbf{Core Methodologies} & SVM, Random Forest, DII & U-Net, DeepLabv3+, SegFormer & Masked Autoencoders, BioCLIP, SAM \\
+    \addlinespace[3pt]
+    \textbf{Main Limitation} & Salt-and-pepper noise; mixed pixels & Data-hungry; overfitting on small surveys & Pre-training compute; terrestrial bias \\
+    \bottomrule
+  \end{tabular}
+  }
+  \end{center}
+  \vspace{0.2cm}
+  \begin{exampleblock}{The Common Blindspot}
+    All three eras share one critical vulnerability when taken out of the lab: \textbf{How do they handle data distribution changes?}
+  \end{exampleblock}
+\end{frame}
+
+% ======================================================================
+% SLIDE 14: The Reality Check: Lab to Sea
+% ======================================================================
+\begin{frame}{The Reality Check: Bringing AI from the Lab to the Sea}
+  \begin{center}
+    \large\textit{``Our model achieved 94\% F1-score on the test set...\\
+    so why did it fail completely when deployed next summer?''}
+  \end{center}
+  \vspace{0.3cm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{The Standard Machine Learning Assumption}
+        Training and test data are \textbf{Independent and Identically Distributed (i.i.d.)}:
+        \begin{equation*}
+          P_{\text{train}}(X, Y) \equiv P_{\text{test}}(X, Y)
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{The Marine Reality}
+        The ocean is an inherently dynamic, non-stationary environment:
+        \begin{equation*}
+          P_{\text{train}}(X, Y) \neq P_{\text{deployment}}(X, Y)
+        \end{equation*}
+        $\Rightarrow$ \textbf{Dataset Shift.}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \centering
+  \textbf{In marine habitat mapping, high test accuracy is easy; transferability is hard.}
+\end{frame}
+
+% ======================================================================
+% SLIDE 15: What is Dataset Shift?
+% ======================================================================
+\begin{frame}{Deconstructing Dataset Shift in Seagrass Monitoring}
+  By the chain rule of probability, the joint distribution of observations $X$ and habitats $Y$ is:
+  \begin{equation*}
+    P(X, Y) = P(Y \mid X) \, P(X) = P(X \mid Y) \, P(Y)
+  \end{equation*}
+
+  \vspace{0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{block}{Covariate Shift}
+        $P(X)$ changes,\\
+        $P(Y \mid X)$ remains fixed.
+        \vspace{0.15cm}
+        \small
+        \textit{Example:} Water turbidity or illumination changes, but the true habitat boundary does not move.
+      \end{block}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{alertblock}{Concept Shift}
+        $P(Y \mid X)$ changes,\\
+        $P(X)$ may or may not change.
+        \vspace{0.15cm}
+        \small
+        \textit{Example:} Decaying meadow canopy or epiphyte blooms alter the spectral response of living seagrass.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{exampleblock}{Prior Shift}
+        $P(Y)$ changes,\\
+        $P(X \mid Y)$ remains fixed.
+        \vspace{0.15cm}
+        \small
+        \textit{Example:} Moving from a dense continuous reserve (70\% cover) to a fragmented urbanized bay (5\% cover).
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 16: Environmental & Optical Drivers of Shift
+% ======================================================================
+\begin{frame}{Real-World Drivers of Shift in Marine Ecosystems}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{1. Environmental \& Phenological Shifts}
+        \begin{itemize}
+          \item \textbf{Turbidity surges:} Storms, runoff, resuspension alter attenuation coefficients ($k$).
+          \item \textbf{CDOM \& Chlorophyll:} Seasonal phytoplankton blooms alter the blue/green absorption profile.
+          \item \textbf{Phenology:} Summer leaf growth vs. winter canopy collapse \& exposed \textit{matte}.
+          \item \textbf{Sea surface state:} Variable wave glint, foam, and refraction lenses.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{2. Sensor \& Geographic Domain Shifts}
+        \begin{itemize}
+          \item \textbf{Sensor SRFs:} Sentinel-2 MSI vs. PlanetScope Dove vs. Landsat-8/9 OLI.
+          \item \textbf{Acquisition Geometry:} Solar zenith angle, tidal height, sun glint patterns.
+          \item \textbf{Geographic Migration:} Hyper-oligotrophic waters (Balearic Islands) vs. turbid Atlantic Rías or coastal lagoons (Mar Menor).
+        \end{itemize}
+      \end{alertblock}
+      \vspace{0.1cm}
+      \centering
+      \textit{\footnotesize Models calibrated in June in Formentera face severe distribution shifts by December in Galicia.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 17: Shift Vulnerability Across the Three Eras
+% ======================================================================
+\begin{frame}{How the Three Eras Behave Under Dataset Shift}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \textbf{Era 1: Pixel Models}
+      \begin{itemize}
+        \item \textbf{Extremely fragile} to Covariate Shift: any illumination or turbidity change pushes the 1D spectrum out of the decision boundary.
+        \item Requires constant per-scene manual re-calibration.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \textbf{Era 2: Deep Learning}
+      \begin{itemize}
+        \item Context rejects local noise, but CNNs often suffer from \textbf{texture / domain shortcut learning}.
+        \item Overfits to training water characteristics; silent, catastrophic failures on new unseen coasts.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \textbf{Era 3: Foundation Models}
+      \begin{itemize}
+        \item Pre-trained on diverse global distributions: greater \textbf{latent robustness}.
+        \item Contrastive pre-training enforces invariance to lighting and sensor quirks.
+        \item Can still drift under localized Concept Shifts.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \begin{center}
+    \textit{As models become more expressive, managing distribution shift becomes the true limiting factor for operational adoption.}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+% SLIDE 18: Methodologies to Tackle Dataset Shift
+% ======================================================================
+\begin{frame}{Tackling Dataset Shift: Toward Resilient Monitoring}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{1. Unsupervised Domain Adaptation (UDA):}
+      \begin{itemize}
+        \item Adversarial feature alignment (e.g., DANN) aligning target scene features with source domain embeddings.
+        \item Self-training via teacher-student pseudo-labeling on unannotated target scenes.
+      \end{itemize}
+      \vspace{0.15cm}
+      \textbf{2. Physics-Informed Learning:}
+      \begin{itemize}
+        \item Constraining neural network predictions with bio-optical radiative transfer models ($K_d$, bathymetry).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{3. Out-of-Distribution (OOD) Detection:}
+      \begin{itemize}
+        \item Estimating model uncertainty (Evidential Deep Learning, Monte Carlo Dropout).
+        \item \textbf{Fail gracefully:} Flagging pixels/regions where the water column is out of distribution rather than generating spurious maps.
+      \end{itemize}
+      \vspace{0.15cm}
+      \textbf{4. Human-in-the-Loop Active Learning:}
+      \begin{itemize}
+        \item Querying human experts only on high-uncertainty boundary zones.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+% SLIDE 19: Conclusions & The Road Ahead
+% ======================================================================
+\begin{frame}{Conclusions \& The Road Ahead}
+  \begin{enumerate}
+    \item \textbf{The Technological Leap:} Marine habitat mapping has transitioned from rigid, isolated spectral pixels (Era 1) to rich spatial-context deep architectures (Era 2), and now to self-supervised foundation models (Era 3).
+    \vspace{0.15cm}
+    \item \textbf{Bypassing the Label Bottleneck:} Foundation models pre-trained on planetary-scale Earth observation archives drastically reduce our dependence on prohibitive underwater field campaigns.
+    \vspace{0.15cm}
+    \item \textbf{The True Frontier is Dataset Shift:} Moving AI from academic benchmarks to operational public policy requires models that survive non-stationary oceans, seasonal canopy dynamics, and sensor migrations.
+    \vspace{0.15cm}
+    \item \textbf{Operational Principle:} \textit{Success is no longer measured by accuracy on a static test set, but by robustness to distribution shift across space and time.}
+  \end{enumerate}
+\end{frame}
+
+% ======================================================================
+% SLIDE 20: Thank You / Q&A
+% ======================================================================
+\begin{frame}[standout]
+  \Large Thank You for Your Attention!\\[16pt]
+  \normalsize
+  \textbf{Artificial Intelligence Applied to the Mapping and Monitoring of Seagrass Meadows}\\[12pt]
+  \small
+  \textbf{Pablo González}$^{1}$ \quad \& \quad \textbf{Fernando García-González}$^{2}$\\[4pt]
+  $^{1}$AIC, Universidad de Oviedo \quad $^{2}$IEO-CSIC\\[16pt]
+  \textit{Questions \& Discussion}
+\end{frame}
+
+\end{document}
