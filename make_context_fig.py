@@ -82,7 +82,7 @@ def generate_pixel_patch_context_figure():
     draw.text((p2_x + 15, px_disp_y + 195), "Nadir Spectrum Only:", font=font_subtitle, fill=(217, 83, 79))
     draw.text((p2_x + 15, px_disp_y + 225), "• Severe Spectral Overlap", font=font_body_bold, fill=(30, 40, 50))
     draw.text((p2_x + 15, px_disp_y + 250), "• Macroalgae? Rock shadow?", font=font_body, fill=(70, 80, 95))
-    draw.text((p2_x + 15, px_disp_y + 275), "• Posidonia? Impossible to tell!", font=font_body_bold, fill=(217, 83, 79))
+    draw.text((p2_x + 15, px_disp_y + 275), "• Seagrass? Impossible to tell!", font=font_body_bold, fill=(217, 83, 79))
 
     # Panel 3: (c) Spatial Patch
     p3_x, p3_y = 825, 45
@@ -98,8 +98,8 @@ def generate_pixel_patch_context_figure():
     # Patch description
     draw.text((p3_x + 15, px_disp_y + 195), "Canopy Texture & Shape:", font=font_subtitle, fill=(34, 112, 70))
     draw.text((p3_x + 15, px_disp_y + 225), "• Blade clusters & orientation", font=font_body_bold, fill=(30, 40, 50))
-    draw.text((p3_x + 15, px_disp_y + 250), "• Matte texture & sand border", font=font_body, fill=(70, 80, 95))
-    draw.text((p3_x + 15, px_disp_y + 275), "• Unambiguous Posidonia!", font=font_body_bold, fill=(34, 112, 70))
+    draw.text((p3_x + 15, px_disp_y + 250), "• Canopy texture & bed border", font=font_body, fill=(70, 80, 95))
+    draw.text((p3_x + 15, px_disp_y + 275), "• Unambiguous Seagrass Bed!", font=font_body_bold, fill=(34, 112, 70))
 
     # Panel 4: (d) 2D Convolution Kernel
     p4_x, p4_y = 1145, 45

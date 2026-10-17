@@ -17,8 +17,8 @@
 % ----------------------------------------------------------------------
 \definecolor{OceanDark}{RGB}{11, 37, 69}       % Deep Navy / Abyssal
 \definecolor{OceanMedium}{RGB}{19, 64, 116}    % Oceanic Blue
-\definecolor{OceanTeal}{RGB}{0, 119, 145}      % Mediterranean Teal
-\definecolor{SeagrassGreen}{RGB}{34, 112, 70}  % Posidonia Foliage
+\definecolor{OceanTeal}{RGB}{0, 119, 145}      % Coastal / Marine Teal
+\definecolor{SeagrassGreen}{RGB}{34, 112, 70}  % Seagrass Canopy Green
 \definecolor{CoralAccent}{RGB}{217, 83, 79}     % Coral / Alert red-orange
 \definecolor{BgLight}{RGB}{250, 251, 252}      % Clean white-gray
 
@@ -69,20 +69,20 @@
     \begin{column}{0.54\textwidth}
       \textbf{Why Seagrasses Matter:}
       \begin{itemize}
-        \item \textbf{Global Blue Carbon Sinks:} \textit{Posidonia oceanica} deposits (\textit{matte}) store carbon $>30\times$ faster than tropical rainforests.
-        \item \textbf{Coastal Protection:} Dampens wave energy, stabilizes sediments.
-        \item \textbf{Biodiversity Hotspots:} Priority habitat under EU Habitats Directive (1120*) \& MSFD.
+        \item \textbf{Global Blue Carbon Sinks:} Long-term organic carbon burial in sediments and rhizome mats ($>30\times$ faster than tropical rainforests).
+        \item \textbf{Coastal Protection:} Dampens wave energy, stabilizes sediments across open coasts, lagoons, and estuaries.
+        \item \textbf{Biodiversity \& Habitat Quality:} Key bioindicators under EU Habitats Directive (1110, 1120*, 1130), MSFD, and WFD.
       \end{itemize}
       \vspace{0.1cm}
       \begin{alertblock}{The Operational Bottleneck}
-        Diver transects and research vessels are \textbf{costly, localized, and temporally sparse}.
+        In situ sampling (diver transects, drop-cams, coring) is \textbf{costly, localized, and temporally sparse}.
       \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
       \centering
       \includegraphics[width=\linewidth, height=3.3cm, keepaspectratio]{figures/posidonia_underwater.jpg}\\[3pt]
-      \textit{\scriptsize Healthy \textit{Posidonia oceanica} meadow in clear Mediterranean waters.}
-      \vspace{0.2cm}
+      \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
+      \vspace{0.3cm}
       \textit{\footnotesize How can AI turn sparse observation into continuous, operational monitoring?}
     \end{column}
   \end{columns}
@@ -102,13 +102,13 @@
       \textbf{Complementary Sensor Roles:}
       \begin{itemize}
         \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
-        {\footnotesize Synoptic, basin-scale coverage; 5-day revisit; historical archives ($>30$ yrs).}
+        {\footnotesize Synoptic, regional coverage; 5-day revisit; historical archives ($>30$ yrs).}
         \item \textbf{Drones (UAVs):}\newline
-        {\footnotesize Centimetric detail (1--5\,cm); patch fragmentation, shoot density proxies, shallow fringes.}
-        \item \textbf{Underwater Vision (ROV/AUV):}\newline
-        {\footnotesize Millimetric in situ validation; species health (epiphytes, necrosis), invasive algae.}
+        {\footnotesize Centimetric detail (1--5\,cm); shoot density proxies, shallow beds \& intertidal flats (e.g. exposed \textit{Zostera noltei} at low tide).}
+        \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
+        {\footnotesize Millimetric in situ validation; meadow health (epiphytes, necrosis), canopy structure.}
         \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
-        {\footnotesize Deep limits ($>35$\,m) and turbid waters beyond optical photic penetration.}
+        {\footnotesize Deep limits and turbid coastal/estuarine waters beyond optical penetration.}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -246,7 +246,7 @@
       \textbf{The Cloud Computing Breakthrough:}
       \begin{itemize}
         \item Integration of \textbf{Google Earth Engine (GEE)} with Sentinel-2 MSI open-access data.
-        \item First automated, basin-scale attempts to map Mediterranean \textit{Posidonia oceanica} meadows.
+        \item First automated, regional-scale attempts to map seagrass meadows across European coastal waters.
         \item \textbf{Key Works:}
         \begin{itemize}
           \item \textit{Traganos \& Reinartz (2018):} Mapping Aegean seagrasses using GEE, Sentinel-2, SVM, and RF.
@@ -286,7 +286,7 @@
       \begin{alertblock}{2. The Mixed Pixel Dilemma}
         At 10--20\,m resolution:
         \begin{itemize}
-          \item Boundary pixels mix canopy, sand, and dead \textit{matte}.
+          \item Boundary pixels mix canopy shoots with bare sediment (sand/mud), rock, or decaying organic matte.
           \item Hard classifiers force a wrong binary choice.
         \end{itemize}
       \end{alertblock}
@@ -337,67 +337,28 @@
 % ======================================================================
 \begin{frame}{From Patch Classification to Dense Segmentation (U-Net)}
   \centering
-  \begin{tikzpicture}[scale=0.84, every node/.style={transform shape}]
-    % Blocks Level 1
-    \node[draw=OceanDark, fill=OceanDark!15, minimum width=0.85cm, minimum height=1.4cm, rounded corners=3pt] (e1) at (0.4, 0) {\scriptsize $H \times W$};
-    \node[draw=SeagrassGreen, fill=SeagrassGreen!15, minimum width=0.85cm, minimum height=1.4cm, rounded corners=3pt] (d1) at (8.4, 0) {\scriptsize $H \times W$};
-
-    % Group Labels above Level 1
-    \node[above=0.12cm of e1, font=\footnotesize\bfseries, color=OceanDark] {Encoder};
-    \node[above=0.12cm of d1, font=\footnotesize\bfseries, color=SeagrassGreen] {Decoder};
-
-    % Input & Output
-    \node[left=0.25cm of e1, font=\scriptsize\bfseries, color=OceanDark, align=right] (in_lbl) {Input\\Tile};
-    \draw[->, >=stealth, thick, OceanDark] (in_lbl) -- (e1);
-
-    \node[right=0.25cm of d1, font=\scriptsize\bfseries, color=SeagrassGreen, align=left] (out_lbl) {Benthic\\Mask};
-    \draw[->, >=stealth, thick, SeagrassGreen] (d1) -- (out_lbl);
-
-    % Blocks Level 2
-    \node[draw=OceanDark, fill=OceanDark!30, minimum width=0.85cm, minimum height=1.0cm, rounded corners=3pt] (e2) at (2.2, -0.75) {\scriptsize $\frac{H}{2} \times \frac{W}{2}$};
-    \node[draw=SeagrassGreen, fill=SeagrassGreen!30, minimum width=0.85cm, minimum height=1.0cm, rounded corners=3pt] (d2) at (6.6, -0.75) {\scriptsize $\frac{H}{2} \times \frac{W}{2}$};
-
-    % Bottleneck
-    \node[draw=OceanDark, fill=OceanDark!85, text=white, minimum width=1.6cm, minimum height=0.6cm, rounded corners=3pt] (b) at (4.4, -1.45) {\scriptsize\bfseries Bottleneck};
-
-    % Downsampling arrows
-    \draw[->, >=stealth, thick, OceanDark] (e1.south) |- (e2.west);
-    \node[font=\tiny\bfseries, color=OceanDark, above] at (1.3, -0.75) {Pool $\downarrow$};
-    \draw[->, >=stealth, thick, OceanDark] (e2.south) |- (b.west);
-
-    % Upsampling arrows
-    \draw[->, >=stealth, thick, SeagrassGreen] (b.east) -| (d2.south);
-    \draw[->, >=stealth, thick, SeagrassGreen] (d2.east) -| (d1.south);
-    \node[font=\tiny\bfseries, color=SeagrassGreen, above] at (7.5, -0.75) {Up $\uparrow$};
-
-    % Straight Skip Connections
-    \draw[->, >=stealth, line width=1.1pt, dashed, CoralAccent] (e1.east) -- node[above=1pt, font=\scriptsize\bfseries, color=CoralAccent] {Skip Connection: Transfers crisp spatial edges \& anchor scars} (d1.west);
-    \draw[->, >=stealth, line width=1.1pt, dashed, CoralAccent] (e2.east) -- node[above=1pt, font=\tiny\bfseries, color=CoralAccent] {Skip Connection} (d2.west);
-  \end{tikzpicture}
-
-  \vspace{0.1cm}
+  \includegraphics[width=\textwidth, height=2.85cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
+  
+  \vspace{0.15cm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \textbf{Why Not Sliding Patch CNNs?}
-      \begin{itemize}
-        \item High redundancy: sliding windows pixel-by-pixel is slow.
-        \item Coarse borders: cannot trace crisp meadow fringes.
-      \end{itemize}
-      \textbf{Fully Convolutional Shift (U-Net):}
-      \begin{itemize}
-        \item Direct end-to-end mapping: $H \times W$ tile $\rightarrow$ $H \times W$ mask in one forward pass.
+      \textbf{What Dense Segmentation Solves:}
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
+        \item \textbf{Skip Connections:} Bridges low-level spatial coordinates from encoder to decoder, preserving crisp meadow fringes and narrow sand channels.
+        \item \textbf{Multi-Scale Context:} Resolves both vast continuous beds and fragmented colonies.
       \end{itemize}
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \textbf{Skip Connections are Decisive:}
-      \begin{itemize}
-        \item Bridges fine spatial coordinates directly across to deep semantic representations.
-        \item Resolves narrow sand channels and anchor damage scars!
-      \end{itemize}
-      \textbf{Multi-Scale Context (DeepLabv3+):}
-      \begin{itemize}
-        \item ASPP captures both vast meadows and sparse colonies.
-      \end{itemize}
+    \begin{column}{0.50\textwidth}
+      \begin{alertblock}{The Bottleneck: Hand Annotation is Hard!}
+        \footnotesize
+        Supervised models demand \textbf{dense pixel-level ground truth}:
+        \begin{itemize}\setlength{\itemsep}{1.5pt}
+          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices along fractal canopy fringes and blowouts takes \textbf{30--60\,min per tile}.
+          \item \textbf{Subjectivity \& Ambiguity:} Fuzzy boundaries on sand/mud flats and turbidity cause human labeling discrepancies.
+          \item \textbf{The Scaling Limit:} Dense manual labeling cannot keep pace with continuous monitoring $\rightarrow$ motivates \textbf{Era 3}!
+        \end{itemize}
+      \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
@@ -411,21 +372,22 @@
       \textbf{UAV / Drone Photogrammetry + CNNs:}
       \begin{itemize}
         \item Centimetric orthomosaics + Digital Surface Models (DSM).
+        \item Applied across both subtidal meadows and intertidal flats (e.g. estuarine \textit{Zostera noltei} at low tide).
         \item U-Net applied to quantify:
         \begin{itemize}
           \item Patch perimeter-to-area fragmentation ratios
-          \item Direct proxy for shoot density
-          \item Beached necromass (\textit{banquettes}) volume
+          \item Direct proxy for shoot density \& cover
+          \item Wrack line / beached necromass volume
         \end{itemize}
         \item \textit{Ventura et al. (2022); Montero-Hidalgo et al. (2023)}.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{Underwater Vision (ROV / AUV):}
+      \textbf{Underwater Vision (ROV / AUV / Drop-Cam):}
       \begin{itemize}
         \item Automated benthic photoquadrat segmentation.
-        \item Differentiating live \textit{Posidonia} from \textbf{dead matte} (critical for blue carbon audits).
-        \item Detecting invasive alien macroalgae (\textit{Rugulopteryx okamurae}, \textit{Caulerpa cylindracea}).
+        \item Differentiating living seagrass canopy from dead matte / exposed rhizomes and bare sediment.
+        \item Discriminating seagrass from opportunistic or invasive algae (\textit{Ulva} blooms, \textit{Caulerpa}, \textit{Rugulopteryx}).
         \item \textbf{Color Restoration Pre-processing:} Sea-thru algorithm (Akkaynak \& Treibitz, CVPR 2019) reverses underwater light attenuation.
       \end{itemize}
     \end{column}
@@ -600,24 +562,26 @@
 % ======================================================================
 \begin{frame}{Real-World Drivers of Shift in Marine Ecosystems}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.46\textwidth}
       \centering
-      \includegraphics[width=\linewidth, height=3.8cm, keepaspectratio]{figures/dataset_shift_comparison.jpg}\\[2pt]
-      \textit{\scriptsize Summer (Clear / Dense Canopy) vs. Winter (Turbid / Dead Matte).}
+      \includegraphics[width=\linewidth, height=3.0cm, keepaspectratio]{figures/dataset_shift_comparison.jpg}\\[3pt]
+      \textit{\scriptsize Seasonal \& environmental shift: Peak summer canopy vs. winter turbidity and defoliation.}
     \end{column}
-    \begin{column}{0.50\textwidth}
+    \begin{column}{0.52\textwidth}
       \begin{block}{1. Environmental \& Phenological Shifts}
-        \begin{itemize}
+        \footnotesize
+        \begin{itemize}\setlength{\itemsep}{1.5pt}
           \item \textbf{Turbidity surges:} Storms alter light attenuation ($k$).
-          \item \textbf{Phenology:} Summer leaf growth vs. winter canopy collapse \& exposed \textit{matte}.
-          \item \textbf{CDOM \& Blooms:} Shift blue/green absorption.
+          \item \textbf{Phenology:} Summer peak vs. winter defoliation/dormancy (\textit{Zostera}, \textit{Cymodocea}, \textit{Posidonia}).
+          \item \textbf{Tides \& Runoff:} Intertidal exposure (\textit{Zostera noltei}), estuarine plumes, and CDOM surges.
         \end{itemize}
       \end{block}
       \vspace{0.05cm}
-      \begin{alertblock}{2. Sensor \& Domain Shifts}
-        \begin{itemize}
+      \begin{alertblock}{2. Sensor \& Geographic Domain Shifts}
+        \footnotesize
+        \begin{itemize}\setlength{\itemsep}{1.5pt}
           \item \textbf{Sensor SRFs:} Sentinel-2 vs. PlanetScope vs. UAV.
-          \item \textbf{Geography:} Balearics vs. turbid Atlantic Rías.
+          \item \textbf{Biogeography:} Mediterranean bays vs. turbid Atlantic Rías and Cantabrian estuaries.
         \end{itemize}
       \end{alertblock}
     \end{column}
