@@ -337,15 +337,16 @@
 % ======================================================================
 \begin{frame}{From Patch Classification to Dense Segmentation (U-Net)}
   \centering
-  \includegraphics[width=\textwidth, height=2.85cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
+  \includegraphics[height=1.95cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
   
-  \vspace{0.15cm}
+  \vspace{0.05cm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
+      \footnotesize
       \textbf{What Dense Segmentation Solves:}
-      \begin{itemize}\setlength{\itemsep}{2pt}
+      \begin{itemize}\setlength{\itemsep}{1.2pt}
         \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
-        \item \textbf{Skip Connections:} Bridges low-level spatial coordinates from encoder to decoder, preserving crisp meadow fringes and narrow sand channels.
+        \item \textbf{Skip Connections:} Bridges spatial coordinates directly across from encoder to decoder, preserving crisp meadow fringes and narrow sand channels.
         \item \textbf{Multi-Scale Context:} Resolves both vast continuous beds and fragmented colonies.
       \end{itemize}
     \end{column}
@@ -353,10 +354,10 @@
       \begin{alertblock}{The Bottleneck: Hand Annotation is Hard!}
         \footnotesize
         Supervised models demand \textbf{dense pixel-level ground truth}:
-        \begin{itemize}\setlength{\itemsep}{1.5pt}
-          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices along fractal canopy fringes and blowouts takes \textbf{30--60\,min per tile}.
+        \begin{itemize}\setlength{\itemsep}{1pt}
+          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices along fractal canopy fringes takes \textbf{30--60\,min per tile}.
           \item \textbf{Subjectivity \& Ambiguity:} Fuzzy boundaries on sand/mud flats and turbidity cause human labeling discrepancies.
-          \item \textbf{The Scaling Limit:} Dense manual labeling cannot keep pace with continuous monitoring $\rightarrow$ motivates \textbf{Era 3}!
+          \item \textbf{The Scaling Limit:} Manual labeling cannot keep pace with continuous monitoring $\rightarrow$ motivates \textbf{Era 3}!
         \end{itemize}
       \end{alertblock}
     \end{column}
