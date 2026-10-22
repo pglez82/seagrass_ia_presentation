@@ -69,7 +69,7 @@
     \begin{column}{0.54\textwidth}
       \textbf{Why Seagrasses Matter:}
       \begin{itemize}
-        \item \textbf{Global Blue Carbon Sinks:} Long-term organic carbon burial in sediments and rhizome mats ($>30\times$ faster than tropical rainforests).
+        \item \textbf{Global Blue Carbon Sinks:} Long-term organic carbon burial ($>30\times$ faster than tropical rainforests).
         \item \textbf{Coastal Protection:} Dampens wave energy, stabilizes sediments across open coasts, lagoons, and estuaries.
         \item \textbf{Biodiversity \& Habitat Quality:} Key bioindicators under EU Habitats Directive (1110, 1120*, 1130), MSFD, and WFD.
       \end{itemize}
@@ -83,7 +83,7 @@
       \includegraphics[width=\linewidth, height=3.3cm, keepaspectratio]{figures/posidonia_underwater.jpg}\\[3pt]
       \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
       \vspace{0.3cm}
-      \textit{\footnotesize How can AI turn sparse observation into continuous, operational monitoring?}
+      \textit{How can AI turn sparse observation into continuous, operational monitoring?}
     \end{column}
   \end{columns}
 \end{frame}
@@ -102,13 +102,13 @@
       \textbf{Complementary Sensor Roles:}
       \begin{itemize}
         \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
-        {\footnotesize Synoptic, regional coverage; 5-day revisit; historical archives ($>30$ yrs).}
+        {\footnotesize Global or nearly global coverage; 5-day revisit; 10m resolution; historical archives ($>30$ yrs).}
         \item \textbf{Drones (UAVs):}\newline
-        {\footnotesize Centimetric detail (1--5\,cm); shoot density proxies, shallow beds \& intertidal flats (e.g. exposed \textit{Zostera noltei} at low tide).}
+        {\footnotesize Centimetric detail (1--5\,cm); rapid deployment; local surveys.}
         \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
-        {\footnotesize Millimetric in situ validation; meadow health (epiphytes, necrosis), canopy structure.}
+        {\footnotesize Millimetric in situ validation; }
         \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
-        {\footnotesize Deep limits and turbid coastal/estuarine waters beyond optical penetration.}
+        {\footnotesize Rellenar}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -134,50 +134,49 @@
     }
   ]
     % Era 1 Card
-    \node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.25) {
-      {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
-      \vspace{1.5pt}
-      {\centering \textit{\scriptsize Spectral Paradigm (2000--2018)}\par}
-      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-      \scriptsize
-      $\bullet$ \textbf{Input:} 1D spectral vector $\mathbf{x} \in \mathbb{R}^B$\\[2.5pt]
-      $\bullet$ \textbf{Context:} None ($0\%$, pixel-blind)\\[2.5pt]
-      $\bullet$ \textbf{Physics:} Lyzenga DII, Stumpf ratios\\[2.5pt]
-      $\bullet$ \textbf{Classifiers:} MLC, SVM, RF\\[2.5pt]
-      $\bullet$ \textbf{Limitation:} Salt-and-pepper noise
-    };
+\node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.25) {
+  {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
+  \vspace{1.5pt}
+  {\centering \textit{\scriptsize Spectral Paradigm (2000--)}\par}
+  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+  \scriptsize
+  $\bullet$ \textbf{Input:} 1D spectral vector $\mathbf{x} \in \mathbb{R}^B$\\[2.5pt]
+  $\bullet$ \textbf{Context:} No spatial context\\[2.5pt]
+  $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest\\[2.5pt]
+  $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns
+};
 
-    % Era 2 Card
-    \node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.25) {
-      {\centering \textbf{\small Era 2: Deep Learning}\par}
-      \vspace{1.5pt}
-      {\centering \textit{\scriptsize Spatial Context Paradigm (2018--2023)}\par}
-      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-      \scriptsize
-      $\bullet$ \textbf{Input:} Tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2.5pt]
-      $\bullet$ \textbf{Context:} Receptive field, ASPP\\[2.5pt]
-      $\bullet$ \textbf{Features:} Texture \& continuity\\[2.5pt]
-      $\bullet$ \textbf{Classifiers:} U-Net, DeepLabv3+\\[2.5pt]
-      $\bullet$ \textbf{Limitation:} Dense masks required
-    };
+% Era 2 Card
+\node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.25) {
+  {\centering \textbf{\small Era 2: Deep Learning}\par}
+  \vspace{1.5pt}
+  {\centering \textit{\scriptsize Spatial Context Paradigm (2015--)}\par}
+  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+  \scriptsize
+  $\bullet$ \textbf{Input:} Image tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2.5pt]
+  $\bullet$ \textbf{Context:} Learns spatial-spectral patterns\\[2.5pt]
+  $\bullet$ \textbf{Features:} Hierarchical features (edges, textures, etc.)\\[2.5pt]
+  $\bullet$ \textbf{Methods:} CNNs, U-Net\\[2.5pt]
+  $\bullet$ \textbf{Limitation:} Often needs task-specific labels
+};
 
-    % Era 3 Card
-    \node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.25) {
-      {\centering \textbf{\small Era 3: Foundation Models}\par}
-      \vspace{1.5pt}
-      {\centering \textit{\scriptsize Self-Supervised Paradigm (2023+)}\par}
-      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-      \scriptsize
-      $\bullet$ \textbf{Input:} Latent token embeddings\\[2.5pt]
-      $\bullet$ \textbf{Context:} Global planetary priors\\[2.5pt]
-      $\bullet$ \textbf{Pre-training:} Unlabeled archives\\[2.5pt]
-      $\bullet$ \textbf{Models:} Prithvi, OceanMAE, SAM\\[2.5pt]
-      $\bullet$ \textbf{Supervision:} Few-shot adaptation
-    };
+% Era 3 Card
+\node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.25) {
+  {\centering \textbf{\small Era 3: Foundation Models}\par}
+  \vspace{1.5pt}
+  {\centering \textit{\scriptsize Large-Scale Pre-training (2020s--)}\par}
+  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+  \scriptsize
+  $\bullet$ \textbf{Input:} Contextual latent representations\\[2.5pt]
+  $\bullet$ \textbf{Context:} Patterns learned across large datasets\\[2.5pt]
+  $\bullet$ \textbf{Pre-training:} Often uses unlabelled imagery\\[2.5pt]
+  $\bullet$ \textbf{Models:} Prithvi, SatMAE, TerraMind\\[2.5pt]
+  $\bullet$ \textbf{Adaptation:} Linear probes, fine-tuning, few-shot
+};
 
     % High-impact graphical chevron arrows between cards
-    \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west)$) {};
-    \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west)$) {};
+  \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west) + (0,-0.4)$) {};
+  \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west) + (0,-0.4)$) {};
 
     % Clean pill badges above chevrons
     \node[font=\tiny\bfseries, color=OceanMedium, fill=white, draw=OceanMedium!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
@@ -249,22 +248,21 @@
         \item First automated, regional-scale attempts to map seagrass meadows across European coastal waters.
         \item \textbf{Key Works:}
         \begin{itemize}
-          \item \textit{Traganos \& Reinartz (2018):} Mapping Aegean seagrasses using GEE, Sentinel-2, SVM, and RF.
-          \item \textit{Poursanidis et al. (2018):} Delineating coastal habitats and lower depth limits across Greek waters.
+          \item \textit{Traganos \& Reinartz (2018):} Interannual Change Detection of Mediterranean Seagrasses Using RapidEye Image Time Series.
+          \item \textit{Poursanidis et al. (2018):} Buscar referencias
         \end{itemize}
       \end{itemize}
     \end{column}
     \begin{column}{0.42\textwidth}
       \begin{exampleblock}{Key Achievements of Era 1}
         \begin{itemize}
-          \item Showed feasibility of regional satellite mapping without costly aircraft.
+          \item Showed the feasibility of using satellite for automatic seagrass mapping.
           \item Demonstrated usefulness of open Copernicus Sentinel data.
           \item Provided first national baseline estimates of coastal seagrass extents.
         \end{itemize}
       \end{exampleblock}
       \vspace{0.2cm}
       \centering
-      \small \textit{Yet, operational managers noted significant discrepancies on the ground...}
     \end{column}
   \end{columns}
 \end{frame}
@@ -365,99 +363,175 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 10: Deep Learning Across Scales: Drones & Underwater
+% SLIDE 11: Era 3: The Label Scarcity Dilemma
 % ======================================================================
-\begin{frame}{Deep Learning Beyond Satellites: Drones \& Robotics}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \textbf{UAV / Drone Photogrammetry + CNNs:}
-      \begin{itemize}
-        \item Centimetric orthomosaics + Digital Surface Models (DSM).
-        \item Applied across both subtidal meadows and intertidal flats (e.g. estuarine \textit{Zostera noltei} at low tide).
-        \item U-Net applied to quantify:
-        \begin{itemize}
-          \item Patch perimeter-to-area fragmentation ratios
-          \item Direct proxy for shoot density \& cover
-          \item Wrack line / beached necromass volume
-        \end{itemize}
-        \item \textit{Ventura et al. (2022); Montero-Hidalgo et al. (2023)}.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \textbf{Underwater Vision (ROV / AUV / Drop-Cam):}
-      \begin{itemize}
-        \item Automated benthic photoquadrat segmentation.
-        \item Differentiating living seagrass canopy from dead matte / exposed rhizomes and bare sediment.
-        \item Discriminating seagrass from opportunistic or invasive algae (\textit{Ulva} blooms, \textit{Caulerpa}, \textit{Rugulopteryx}).
-        \item \textbf{Color Restoration Pre-processing:} Sea-thru algorithm (Akkaynak \& Treibitz, CVPR 2019) reverses underwater light attenuation.
-      \end{itemize}
-    \end{column}
-  \end{columns}
+\begin{frame}{Era 3: Foundation Models -- Learning Without Labels}
+
+\begin{alertblock}{The Marine Label Bottleneck}
+  Annotating underwater imagery is expensive and time-consuming,
+  while vast amounts of satellite and marine imagery remain unlabeled.
+\end{alertblock}
+
+\vspace{0.15cm}
+
+\begin{columns}[T,onlytextwidth]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Large Language Models}
+      \centering
+      \textbf{Predict the next token}
+
+      \vspace{0.15cm}
+      The cat sat on the \textcolor{blue}{\textbf{?}}
+
+      \vspace{0.1cm}
+      \footnotesize
+      \textit{Training data:} enormous text corpora
+      collected from books, websites and other sources.
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.48\textwidth}
+    \begin{exampleblock}{Earth Observation Models}
+      \centering
+      \textbf{Predict masked image patches}
+
+      \vspace{0.15cm}
+      Observe surrounding patches; reconstruct the hidden region.
+
+      \vspace{0.1cm}
+      \footnotesize
+      \textit{Training data:} massive collections of
+      unlabeled satellite imagery.
+    \end{exampleblock}
+  \end{column}
+\end{columns}
+
+\vspace{0.15cm}
+
+\begin{center}
+  \Large
+  \textbf{Self-supervised learning: learn from the data itself}
+\end{center}
+
+\vspace{0.05cm}
+\centering
+\footnotesize
+Pretrain on abundant unlabeled data; adapt to seagrass mapping
+with a much smaller set of labeled examples.
+
+\end{frame}
+% ======================================================================
+% SLIDE 12: Foundation Models & Self-Supervised Learning
+% ======================================================================
+\begin{frame}{Foundation Models for Earth Monitoring}
+\small
+
+\begin{columns}[T,onlytextwidth]
+
+\begin{column}{0.49\textwidth}
+  \textbf{1. Earth Observation}
+
+  \vspace{0.1cm}
+  \begin{itemize}
+    \setlength{\itemsep}{0.18cm}
+
+    \item \textbf{Prithvi / SatMAE}
+    \begin{itemize}
+      \item \textit{Masked reconstruction}
+      \item Reconstruct hidden satellite patches
+      to learn spectral and spatial patterns.
+    \end{itemize}
+
+    \item \textbf{TerraMind}
+    \begin{itemize}
+      \item \textit{Cross-modal prediction}
+      \item Predict missing geospatial modalities
+      from optical, SAR and other observations.
+    \end{itemize}
+  \end{itemize}
+
+  \textbf{Goal:} Transferable representations
+  for satellite-based habitat mapping.
+\end{column}
+
+\begin{column}{0.49\textwidth}
+  \textbf{2. Promptable Segmentation}
+
+  \vspace{0.1cm}
+  \begin{itemize}
+    \setlength{\itemsep}{0.18cm}
+
+    \item \textbf{Segment Anything (SAM)}
+    \begin{itemize}
+      \item \textit{Prompt-to-mask prediction}
+      \item Given a point or bounding box,
+      predict the corresponding object mask.
+    \end{itemize}
+
+    
+  \end{itemize}
+\end{column}
+
+\end{columns}
+
+\vspace{0.15cm}
+\hrule
+\vspace{0.12cm}
+
+\centering
+\footnotesize
+\textbf{Transferable representations and segmentation tools}
+\\
+Domain adaptation and field validation remain essential.
+
 \end{frame}
 
 % ======================================================================
-% SLIDE 11: Era 3: The Label Scarcity Dilemma
+% SLIDE 13: Operational Example: Foundation Model Embeddings in Seagrass
 % ======================================================================
-\begin{frame}{Era 3: The Marine Label Bottleneck}
-  \begin{columns}[T]
-    \begin{column}{0.50\textwidth}
-      \begin{alertblock}{The Supervised AI Paradox}
-        Deep Learning is data-hungry, but \textbf{marine ground-truth is exceptionally scarce}:
-        \begin{itemize}
-          \item Oceanographic ship time: \textbf{€5,000--€20,000 / day}.
-          \item Diving is depth-limited and covers only meters.
-          \item Label ambiguity: Differentiating sparse seagrass on rock from turf algae is challenging.
-        \end{itemize}
-      \end{alertblock}
-      \vspace{0.1cm}
-      $\Rightarrow$ 99.9\% of available marine imagery is \textbf{unlabeled}.
-    \end{column}
+\begin{frame}{TerraMind in Practice: From Tiles to Spatial Embeddings}
+  \centering
+  \includegraphics[height=3.5cm,keepaspectratio]
+    {figures/terramind.png}
+  \vspace{-0.2cm}
+
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \begin{center}
-      \scriptsize
-      \begin{tabular}{ccc}
-        \textbf{1. Scene} & \textbf{2. Masked (75\%)} & \textbf{3. Reconstructed} \\
-        \includegraphics[width=0.30\linewidth]{figures/mae_input.png} &
-        \includegraphics[width=0.30\linewidth]{figures/mae_masked.png} &
-        \includegraphics[width=0.30\linewidth]{figures/mae_recon.png}
-      \end{tabular}
-      \end{center}
-      \vspace{-0.1cm}
-      \begin{exampleblock}{Self-Supervised Learning (SSL)}
-        Masked Autoencoders (MAE) learn robust spatial-spectral priors directly from unannotated ocean scenes.
+      \begin{block}{1. One Embedding per Tile}
+        \footnotesize
+        \begin{itemize}\setlength{\itemsep}{3pt}
+          \item Input: a $224\times224$ satellite tile.
+          \item TerraMind produces a single
+            \textbf{tile-level representation}
+            $\mathbf{z}\in\mathbb{R}^{d}$.
+          \item Feed $\mathbf{z}$ to a standard
+            classifier (e.g., Random Forest or SVM).
+        \end{itemize}
+        \vspace{0.05cm}
+        \centering
+        \textbf{Output:} tile-level habitat class
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.50\textwidth}
+      \begin{exampleblock}{2. One Embedding per Patch}
+        \footnotesize
+        \begin{itemize}\setlength{\itemsep}{3pt}
+          \item The tile contains $14\times14=196$
+            spatial patches ($16\times16$ pixels each).
+          \item TerraMind provides an
+            \textbf{embedding per patch}.
+          \item Train a classifier on each embedding
+            to obtain a spatially detailed habitat map.
+        \end{itemize}
+        \vspace{0.05cm}
+        \centering
+        \textbf{Output:} patch-level habitat predictions
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ======================================================================
-% SLIDE 12: Foundation Models & Self-Supervised Learning
-% ======================================================================
-\begin{frame}{Foundation Models in Remote Sensing \& Marine Vision}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \textbf{1. Earth Observation Foundation Models:}
-      \begin{itemize}
-        \item \textbf{SatMAE \& Prithvi (NASA/IBM):} Masked Autoencoders trained on multispectral satellite imagery.
-        \item \textbf{Clay Foundation Model (2024):} Multi-sensor representation learning.
-        \item \textbf{OceanMAE / Hydro (2024--2025):} Specifically pre-trained on global water bodies, encoding aquatic radiative transfer priors.
-      \end{itemize}
-      \vspace{0.1cm}
-      $\Rightarrow$ Fine-tune with only \textbf{tens} of field points instead of thousands!
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \textbf{2. Biological \& Promptable Vision:}
-      \begin{itemize}
-        \item \textbf{BioCLIP (CVPR 2024):} Vision-language model trained on \textit{TreeOfLife-10M} across 450,000+ species; zero-shot recognition of marine taxa.
-        \item \textbf{Segment Anything (SAM) \& MarineSAM:} Promptable interactive segmentation (bounding box or single click) accelerating expert annotation by $10\times$.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% ======================================================================
-% SLIDE 13: Summary Comparison of the Three Eras
-% ======================================================================
 \begin{frame}{The Three Eras: A Comparative Synthesis}
   \begin{center}
   \resizebox{0.98\textwidth}{!}{
