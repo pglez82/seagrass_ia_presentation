@@ -62,20 +62,19 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 2: Ecological Value & The Monitoring Bottleneck
+% SLIDE 2: Introduction & The Monitoring Bottleneck
 % ======================================================================
-\begin{frame}{The Ecological Imperative \& The Monitoring Bottleneck}
+\begin{frame}{Introduction \& The Monitoring Bottleneck}
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
-      \textbf{Why Seagrasses Matter:}
       \begin{itemize}
-        \item \textbf{Global Blue Carbon Sinks:} Long-term organic carbon burial ($>30\times$ faster than tropical rainforests).
-        \item \textbf{Coastal Protection:} Dampens wave energy, stabilizes sediments across open coasts, lagoons, and estuaries.
-        \item \textbf{Biodiversity \& Habitat Quality:} Key bioindicators under EU Habitats Directive (1110, 1120*, 1130), MSFD, and WFD.
+        \item \textbf{What is talk about?} Understanding the role of AI in seagrass monitoring.
+        \item \textbf{From the past to the future:} Evolution of AI in seagrass mapping: from old fashioned techniques to modern approaches.
+        \item \textbf{Are there any challenges?} Yes, there are!
       \end{itemize}
       \vspace{0.1cm}
       \begin{alertblock}{The Operational Bottleneck}
-        In situ sampling (diver transects, drop-cams, coring) is \textbf{costly, localized, and temporally sparse}.
+        In situ sampling and manual labelling is \textbf{costly, localized, and temporally sparse}.
       \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
@@ -83,9 +82,9 @@
       \includegraphics[width=\linewidth, height=3.3cm, keepaspectratio]{figures/posidonia_underwater.jpg}\\[3pt]
       \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
       \vspace{0.3cm}
-      \textit{How can AI turn sparse observation into continuous, operational monitoring?}
     \end{column}
   \end{columns}
+  \Large \centering \textit{How can AI turn sparse observation into continuous, operational monitoring?}
 \end{frame}
 
 % ======================================================================
@@ -99,14 +98,14 @@
       \textit{\scriptsize Multi-tier observation: Satellites, Drones, Vessels, \& Seafloor.}
     \end{column}
     \begin{column}{0.50\textwidth}
-      \textbf{Complementary Sensor Roles:}
+      \textbf{So many sources of data:}
       \begin{itemize}
         \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
         {\footnotesize Global or nearly global coverage; 5-day revisit; 10m resolution; historical archives ($>30$ yrs).}
         \item \textbf{Drones (UAVs):}\newline
         {\footnotesize Centimetric detail (1--5\,cm); rapid deployment; local surveys.}
         \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
-        {\footnotesize Millimetric in situ validation; }
+        {\footnotesize Millimetric in situ validation. }
         \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
         {\footnotesize Rellenar}
       \end{itemize}
@@ -123,7 +122,7 @@
     scale=0.88, every node/.style={transform shape},
     card/.style={
       rectangle, rounded corners=6pt,
-      minimum width=4.3cm, text width=4.1cm, minimum height=3.9cm,
+      minimum width=4.3cm, text width=4.1cm, minimum height=4.3cm,
       inner sep=6pt, align=left, drop shadow={opacity=0.25, shadow xshift=2pt, shadow yshift=-2pt}
     },
     chevron/.style={
@@ -134,49 +133,49 @@
     }
   ]
     % Era 1 Card
-\node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.25) {
-  {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
-  \vspace{1.5pt}
-  {\centering \textit{\scriptsize Spectral Paradigm (2000--)}\par}
-  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-  \scriptsize
-  $\bullet$ \textbf{Input:} 1D spectral vector $\mathbf{x} \in \mathbb{R}^B$\\[2.5pt]
-  $\bullet$ \textbf{Context:} No spatial context\\[2.5pt]
-  $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest\\[2.5pt]
-  $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns
-};
+    \node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.35) {
+      {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Spectral Paradigm (2000--)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} Each of the pixels in the image\\[2.5pt]
+      $\bullet$ \textbf{Context:} No spatial context\\[2.5pt]
+      $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest, etc\\[2.5pt]
+      $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns,
+    };
 
-% Era 2 Card
-\node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.25) {
-  {\centering \textbf{\small Era 2: Deep Learning}\par}
-  \vspace{1.5pt}
-  {\centering \textit{\scriptsize Spatial Context Paradigm (2015--)}\par}
-  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-  \scriptsize
-  $\bullet$ \textbf{Input:} Image tensor $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$\\[2.5pt]
-  $\bullet$ \textbf{Context:} Learns spatial-spectral patterns\\[2.5pt]
-  $\bullet$ \textbf{Features:} Hierarchical features (edges, textures, etc.)\\[2.5pt]
-  $\bullet$ \textbf{Methods:} CNNs, U-Net\\[2.5pt]
-  $\bullet$ \textbf{Limitation:} Often needs task-specific labels
-};
+    % Era 2 Card
+    \node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.35) {
+      {\centering \textbf{\small Era 2: Deep Learning}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Spatial Context Paradigm (2015--)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} Image tensor\\[2.5pt]
+      $\bullet$ \textbf{Context:} Learns spatial-spectral patterns\\[2.5pt]
+      $\bullet$ \textbf{Features:} Hierarchical features (edges, textures, etc.)\\[2.5pt]
+      $\bullet$ \textbf{Methods:} CNNs, U-Net, ViTs, etc.\\[2.5pt]
+      $\bullet$ \textbf{Limitation:} Needs task-specific labels
+    };
 
-% Era 3 Card
-\node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.25) {
-  {\centering \textbf{\small Era 3: Foundation Models}\par}
-  \vspace{1.5pt}
-  {\centering \textit{\scriptsize Large-Scale Pre-training (2020s--)}\par}
-  \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
-  \scriptsize
-  $\bullet$ \textbf{Input:} Contextual latent representations\\[2.5pt]
-  $\bullet$ \textbf{Context:} Patterns learned across large datasets\\[2.5pt]
-  $\bullet$ \textbf{Pre-training:} Often uses unlabelled imagery\\[2.5pt]
-  $\bullet$ \textbf{Models:} Prithvi, SatMAE, TerraMind\\[2.5pt]
-  $\bullet$ \textbf{Adaptation:} Linear probes, fine-tuning, few-shot
-};
+    % Era 3 Card
+    \node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.35) {
+      {\centering \textbf{\small Era 3: Foundation Models}\par}
+      \vspace{1.5pt}
+      {\centering \textit{\scriptsize Large-Scale Pre-training (2020s--)}\par}
+      \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
+      \scriptsize
+      $\bullet$ \textbf{Input:} Image tensor\\[2.5pt]
+      $\bullet$ \textbf{Context:} Patterns learned across large datasets\\[2.5pt]
+      $\bullet$ \textbf{Pre-training:} Uses unlabelled imagery data\\[2.5pt]
+      $\bullet$ \textbf{Models:} Prithvi, SatMAE, TerraMind, etc.\\[2.5pt]
+      $\bullet$ \textbf{Adaptation:} Linear probes, fine-tuning, few-shot
+    };
 
     % High-impact graphical chevron arrows between cards
-  \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west) + (0,-0.4)$) {};
-  \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west) + (0,-0.4)$) {};
+    \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west) + (0,-0.4)$) {};
+    \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west) + (0,-0.4)$) {};
 
     % Clean pill badges above chevrons
     \node[font=\tiny\bfseries, color=OceanMedium, fill=white, draw=OceanMedium!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
@@ -184,19 +183,18 @@
     \node[font=\tiny\bfseries, color=OceanTeal, fill=white, draw=OceanTeal!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
       at ($(arrow2) + (0, 0.65)$) {+ Pre-train};
 
-    % Bottom Infographic Ribbon 1: Increasing Context (pointing right)
-    \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, -1.30) rectangle (12.1, -0.90);
-    \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, -0.75) -- (12.7, -1.10) -- (12.1, -1.45) -- cycle;
-    \node[font=\footnotesize\bfseries, color=white] at (5.1, -1.10) {
-      Increasing Spatial \& Semantic Context \quad $\boldsymbol{\xrightarrow{\hspace{1.2cm}}}$
-    };
+    % -------------------------------------------------------------
+    % BIG BOTTOM ARROWS / RIBBONS (Shifted down via scope)
+    % -------------------------------------------------------------
+    \begin{scope}[yshift=-0.8cm]
+      % Big Arrow 1: Increasing Context (pointing right)
+      \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, -1.30) rectangle (12.1, -0.90);
+      \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, -0.75) -- (12.7, -1.10) -- (12.1, -1.45) -- cycle;
+      \node[font=\footnotesize\bfseries, color=white] at (5.1, -1.10) {
+        Increasing Spatial \& Semantic Context, Decreasing Dependence on Dense In Situ Labels 
+      };
 
-    % Bottom Infographic Ribbon 2: Decreasing Label Dependency (pointing left)
-    \fill[CoralAccent, rounded corners=3pt, drop shadow={opacity=0.2}] (-1.4, -1.95) rectangle (12.7, -1.55);
-    \fill[CoralAccent, drop shadow={opacity=0.2}] (-1.4, -1.40) -- (-2.0, -1.75) -- (-1.4, -2.10) -- cycle;
-    \node[font=\footnotesize\bfseries, color=white] at (5.5, -1.75) {
-      $\boldsymbol{\xleftarrow{\hspace{1.2cm}}}$ \quad Decreasing Dependence on Dense In Situ Labels (Few-Shot / Zero-Shot)
-    };
+    \end{scope}
 
   \end{tikzpicture}
 \end{frame}
@@ -209,23 +207,22 @@
     \begin{column}{0.5\textwidth}
       \textbf{Core Assumption:}
       \begin{itemize}
-        \item Each pixel vector $\mathbf{x} = [b_1, b_2, \dots, b_B]^T$ is treated as an independent statistical sample.
-        \item The spatial coordinates $(i,j)$ are ignored.
+        \item Each pixel vector $\mathbf{x} \in \mathbb{R}^B$ is treated as an independent statistical sample.
+        \item The spatial coordinates of the pixel are ignored.
+        \item The context of the pixel is not used to inform the classification.
       \end{itemize}
       \vspace{0.15cm}
-      \textbf{Water Column Correction (WCC):}
+      \textbf{Advantages:}
       \begin{itemize}
-        \item \textbf{Lyzenga (1981):} Depth-Invariant Index (DII)
-        \begin{equation*}
-          DII_{ij} = \ln(R_i) - \left[\frac{k_i}{k_j}\right] \ln(R_j)
-        \end{equation*}
-        \item \textbf{Stumpf et al. (2003):} Pseudo-bathymetry ratio $\ln(n R_i) / \ln(n R_j)$.
+        \item Simple and fast to implement.
+        \item Publicly available libraries for typical classifiers.
+        \item Works well for large, homogeneous meadows with clear spectral signatures.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Traditional Classifiers}
         \begin{itemize}
-          \item \textbf{Maximum Likelihood (MLC):} Multivariate Gaussian assumption per benthic class.
+          \item \textbf{Multilayer Perceptron (MLP):} A feedforward neural network with multiple layers.
           \item \textbf{Support Vector Machines (SVM):} Maximum-margin kernel hyperplanes.
           \item \textbf{Random Forest (RF):} Ensemble of decision trees; the dominant baseline.
         \end{itemize}
@@ -236,36 +233,7 @@
   \end{columns}
 \end{frame}
 
-% ======================================================================
-% SLIDE 6: Era 1 in Practice: Achievements & Scale
-% ======================================================================
-\begin{frame}{Era 1 in Practice: Scaling to Regional Basins}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \textbf{The Cloud Computing Breakthrough:}
-      \begin{itemize}
-        \item Integration of \textbf{Google Earth Engine (GEE)} with Sentinel-2 MSI open-access data.
-        \item First automated, regional-scale attempts to map seagrass meadows across European coastal waters.
-        \item \textbf{Key Works:}
-        \begin{itemize}
-          \item \textit{Traganos \& Reinartz (2018):} Interannual Change Detection of Mediterranean Seagrasses Using RapidEye Image Time Series.
-          \item \textit{Poursanidis et al. (2018):} Buscar referencias
-        \end{itemize}
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.42\textwidth}
-      \begin{exampleblock}{Key Achievements of Era 1}
-        \begin{itemize}
-          \item Showed the feasibility of using satellite for automatic seagrass mapping.
-          \item Demonstrated usefulness of open Copernicus Sentinel data.
-          \item Provided first national baseline estimates of coastal seagrass extents.
-        \end{itemize}
-      \end{exampleblock}
-      \vspace{0.2cm}
-      \centering
-    \end{column}
-  \end{columns}
-\end{frame}
+
 
 % ======================================================================
 % SLIDE 7: Why Era 1 Hit a Ceiling (Limitations)
@@ -276,8 +244,8 @@
       \begin{alertblock}{1. Complete Spatial Blindness}
         A single pixel has zero context:
         \begin{itemize}
-          \item Cannot tell dark rock/algae from dense seagrass.
-          \item Produces heavy \textbf{``salt-and-pepper''} noise.
+          \item Typical confusions between dark rock/algae from dense seagrass.
+          \item Produces noise models.
         \end{itemize}
       \end{alertblock}
       \vspace{0.1cm}
@@ -317,14 +285,14 @@
       \textbf{The Single Pixel Dilemma (Era 1):}
       \begin{itemize}
         \item Isolated spectral vector $\mathbf{x} \in \mathbb{R}^B$ has severe class overlap (seagrass vs. macroalgae vs. shadow).
-        \item Zero structural awareness $\rightarrow$ random salt-and-pepper noise.
+        \item Zero structural awareness.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{The Convolutional Revolution (Era 2):}
+      \textbf{The Deep Learning Revolution (Era 2):}
       \begin{itemize}
-        \item Spatial patch $\mathbf{X}$ exposes ribbon morphology, leaf texture, and substrate contrast.
-        \item CNN kernels ($W * \mathbf{X} + b$) natively learn spatial patterns, regularizing habitat boundaries.
+        \item Convolutional Neural Networks (CNNs) are able to learn spatial-spectral patterns directly from image patches.
+        \item They have been invented more than 35 years ago, and have been widely used in computer vision since 2012.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -333,7 +301,7 @@
 % ======================================================================
 % SLIDE 9: From Patch Classification to Dense Segmentation (U-Net)
 % ======================================================================
-\begin{frame}{From Patch Classification to Dense Segmentation (U-Net)}
+\begin{frame}{From Patch Classification to Segmentation (U-Net)}
   \centering
   \includegraphics[height=1.95cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
   
@@ -341,21 +309,21 @@
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \footnotesize
-      \textbf{What Dense Segmentation Solves:}
+      \textbf{What Segmentation Solves:}
       \begin{itemize}\setlength{\itemsep}{1.2pt}
         \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
-        \item \textbf{Skip Connections:} Bridges spatial coordinates directly across from encoder to decoder, preserving crisp meadow fringes and narrow sand channels.
-        \item \textbf{Multi-Scale Context:} Resolves both vast continuous beds and fragmented colonies.
+        \item \textbf{Processing images at once: } U-Net like netorks can process entire tiles at once, capturing global context.
+        \item \textbf{Whats a U-Net?}: A U shape deep learning architecture with encoder-decoder structure and skip connections.
       \end{itemize}
     \end{column}
     \begin{column}{0.50\textwidth}
-      \begin{alertblock}{The Bottleneck: Hand Annotation is Hard!}
+      \begin{alertblock}{The Bottleneck: Hand Annotation}
         \footnotesize
         Supervised models demand \textbf{dense pixel-level ground truth}:
         \begin{itemize}\setlength{\itemsep}{1pt}
-          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices along fractal canopy fringes takes \textbf{30--60\,min per tile}.
-          \item \textbf{Subjectivity \& Ambiguity:} Fuzzy boundaries on sand/mud flats and turbidity cause human labeling discrepancies.
-          \item \textbf{The Scaling Limit:} Manual labeling cannot keep pace with continuous monitoring $\rightarrow$ motivates \textbf{Era 3}!
+          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices in a image is very time consuming and dificult.
+          \item \textbf{Limited Coverage:} Dense annotations are often only available for small areas, limiting model generalization.
+          \item \textbf{Road to Era 3:} This problems motivate the use of self-supervised learning and foundation models.
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -376,7 +344,7 @@
 
 \begin{columns}[T,onlytextwidth]
   \begin{column}{0.48\textwidth}
-    \begin{block}{Large Language Models}
+    \begin{block}{Large Language Models (ChatGPT, Gemini, etc)}
       \centering
       \textbf{Predict the next token}
 
@@ -449,9 +417,6 @@ with a much smaller set of labeled examples.
       from optical, SAR and other observations.
     \end{itemize}
   \end{itemize}
-
-  \textbf{Goal:} Transferable representations
-  for satellite-based habitat mapping.
 \end{column}
 
 \begin{column}{0.49\textwidth}
@@ -500,7 +465,7 @@ Domain adaptation and field validation remain essential.
       \begin{block}{1. One Embedding per Tile}
         \footnotesize
         \begin{itemize}\setlength{\itemsep}{3pt}
-          \item Input: a $224\times224$ satellite tile.
+          \item Input: a $224\times224px$ satellite tile.
           \item TerraMind produces a single
             \textbf{tile-level representation}
             $\mathbf{z}\in\mathbb{R}^{d}$.
@@ -539,22 +504,25 @@ Domain adaptation and field validation remain essential.
     \toprule
     \textbf{Dimension} & \textbf{Era 1: Pixel-by-Pixel} & \textbf{Era 2: Deep Learning} & \textbf{Era 3: Foundation Models} \\
     \midrule
-    \textbf{Data Representation} & 1D vector $\mathbf{x} \in \mathbb{R}^B$ & 2D/3D patch $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$ & Multi-modal latent tokens \\
+    \textbf{Data Representation} & 1D vector $\mathbf{x} \in \mathbb{R}^B$ & 2D/3D patch $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$ & Multi-modal latent representations \\
     \addlinespace[3pt]
-    \textbf{Spatial Context} & Completely blind ($0\%$) & Local receptive field (CNN/ViT) & Global contextual priors \\
+    \textbf{Spatial Context} & Completely blind ($0\%$) & Patch context & Global context \\
     \addlinespace[3pt]
-    \textbf{Label Dependency} & Moderate (per-pixel points) & Extremely high (dense masks) & \textbf{Very low} (few-shot / linear probe) \\
+    \textbf{Label Dependency} & High (per-pixel labels) & High (patches or dense masks) & Very low (few-shot / zero-shot) \\
     \addlinespace[3pt]
-    \textbf{Core Methodologies} & SVM, Random Forest, DII & U-Net, DeepLabv3+, SegFormer & Masked Autoencoders, BioCLIP, SAM \\
+    \textbf{Core Methodologies} & SVM, Random Forest, etc & CNNs, ViTs, U-Nets & Masked Autoencoders, BioCLIP, SAM \\
     \addlinespace[3pt]
-    \textbf{Main Limitation} & Salt-and-pepper noise; mixed pixels & Data-hungry; overfitting on small surveys & Pre-training compute; terrestrial bias \\
+    \textbf{Main Limitation} & Models noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
     \bottomrule
   \end{tabular}
   }
   \end{center}
   \vspace{0.2cm}
   \begin{exampleblock}{The Common Blindspot}
-    All three eras share one critical vulnerability when taken out of the lab: \textbf{How do they handle data distribution changes?}
+    \centering
+    All three eras share one critical vulnerability when taken out of the lab:
+    
+    \textbf{How do they handle data distribution changes?}
   \end{exampleblock}
 \end{frame}
 
@@ -606,62 +574,35 @@ Domain adaptation and field validation remain essential.
       \begin{block}{Covariate Shift}
         $P(X)$ changes,\\
         $P(Y \mid X)$ remains fixed.
-        \vspace{0.15cm}
+        \vspace{0.25cm}
         \small
+        
         \textit{Example:} Water turbidity or illumination changes, but the true habitat boundary does not move.
       \end{block}
     \end{column}
     \begin{column}{0.32\textwidth}
       \begin{alertblock}{Concept Shift}
         $P(Y \mid X)$ changes,\\
-        $P(X)$ may or may not change.
-        \vspace{0.15cm}
+        $P(X)$ could change.
+        \vspace{0.25cm}
         \small
-        \textit{Example:} Decaying meadow canopy or epiphyte blooms alter the spectral response of living seagrass.
+
+        \textit{Example:}  Accumulations of dead algae covering the bottom change how a living seagrass meadow looks.
       \end{alertblock}
     \end{column}
     \begin{column}{0.32\textwidth}
       \begin{exampleblock}{Prior Shift}
         $P(Y)$ changes,\\
         $P(X \mid Y)$ remains fixed.
-        \vspace{0.15cm}
+        \vspace{0.25cm}
         \small
+
         \textit{Example:} Moving from a dense continuous reserve (70\% cover) to a fragmented urbanized bay (5\% cover).
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ======================================================================
-% SLIDE 16: Environmental & Optical Drivers of Shift (Visualized)
-% ======================================================================
-\begin{frame}{Real-World Drivers of Shift in Marine Ecosystems}
-  \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \includegraphics[width=\linewidth, height=3.0cm, keepaspectratio]{figures/dataset_shift_comparison.jpg}\\[3pt]
-      \textit{\scriptsize Seasonal \& environmental shift: Peak summer canopy vs. winter turbidity and defoliation.}
-    \end{column}
-    \begin{column}{0.52\textwidth}
-      \begin{block}{1. Environmental \& Phenological Shifts}
-        \footnotesize
-        \begin{itemize}\setlength{\itemsep}{1.5pt}
-          \item \textbf{Turbidity surges:} Storms alter light attenuation ($k$).
-          \item \textbf{Phenology:} Summer peak vs. winter defoliation/dormancy (\textit{Zostera}, \textit{Cymodocea}, \textit{Posidonia}).
-          \item \textbf{Tides \& Runoff:} Intertidal exposure (\textit{Zostera noltei}), estuarine plumes, and CDOM surges.
-        \end{itemize}
-      \end{block}
-      \vspace{0.05cm}
-      \begin{alertblock}{2. Sensor \& Geographic Domain Shifts}
-        \footnotesize
-        \begin{itemize}\setlength{\itemsep}{1.5pt}
-          \item \textbf{Sensor SRFs:} Sentinel-2 vs. PlanetScope vs. UAV.
-          \item \textbf{Biogeography:} Mediterranean bays vs. turbid Atlantic Rías and Cantabrian estuaries.
-        \end{itemize}
-      \end{alertblock}
-    \end{column}
-  \end{columns}
-\end{frame}
 
 % ======================================================================
 % SLIDE 17: Shift Vulnerability Across the Three Eras
@@ -697,37 +638,6 @@ Domain adaptation and field validation remain essential.
   \end{center}
 \end{frame}
 
-% ======================================================================
-% SLIDE 18: Methodologies to Tackle Dataset Shift
-% ======================================================================
-\begin{frame}{Tackling Dataset Shift: Toward Resilient Monitoring}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \textbf{1. Unsupervised Domain Adaptation (UDA):}
-      \begin{itemize}
-        \item Adversarial feature alignment (e.g., DANN) aligning target scene features with source domain embeddings.
-        \item Self-training via teacher-student pseudo-labeling on unannotated target scenes.
-      \end{itemize}
-      \vspace{0.15cm}
-      \textbf{2. Physics-Informed Learning:}
-      \begin{itemize}
-        \item Constraining neural network predictions with bio-optical radiative transfer models ($K_d$, bathymetry).
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \textbf{3. Out-of-Distribution (OOD) Detection:}
-      \begin{itemize}
-        \item Estimating model uncertainty (Evidential Deep Learning, Monte Carlo Dropout).
-        \item \textbf{Fail gracefully:} Flagging pixels/regions where the water column is out of distribution rather than generating spurious maps.
-      \end{itemize}
-      \vspace{0.15cm}
-      \textbf{4. Human-in-the-Loop Active Learning:}
-      \begin{itemize}
-        \item Querying human experts only on high-uncertainty boundary zones.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
 
 % ======================================================================
 % SLIDE 19: Conclusions & The Road Ahead
