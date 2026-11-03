@@ -68,13 +68,13 @@
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
       \begin{itemize}
-        \item \textbf{What is talk about?} Understanding the role of AI in seagrass monitoring.
+        \item \textbf{What is this talk about?} Understanding the role of AI in seagrass monitoring.
         \item \textbf{From the past to the future:} Evolution of AI in seagrass mapping: from old fashioned techniques to modern approaches.
         \item \textbf{Are there any challenges?} Yes, there are!
       \end{itemize}
       \vspace{0.1cm}
       \begin{alertblock}{The Operational Bottleneck}
-        In situ sampling and manual labelling is \textbf{costly, localized, and temporally sparse}.
+        In situ sampling and manual labelling are \textbf{costly, localized, and temporally sparse}.
       \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
@@ -107,7 +107,7 @@
         \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
         {\footnotesize Millimetric in situ validation. }
         \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
-        {\footnotesize Rellenar}
+        {\footnotesize High-resolution bathymetry and seafloor mapping.}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -142,7 +142,7 @@
       $\bullet$ \textbf{Input:} Each of the pixels in the image\\[2.5pt]
       $\bullet$ \textbf{Context:} No spatial context\\[2.5pt]
       $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest, etc\\[2.5pt]
-      $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns,
+      $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns.
     };
 
     % Era 2 Card
@@ -191,7 +191,7 @@
       \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, -1.30) rectangle (12.1, -0.90);
       \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, -0.75) -- (12.7, -1.10) -- (12.1, -1.45) -- cycle;
       \node[font=\footnotesize\bfseries, color=white] at (5.1, -1.10) {
-        Increasing Spatial \& Semantic Context, Decreasing Dependence on Dense In Situ Labels 
+        Increasing Spatial \& Semantic Context 
       };
 
     \end{scope}
@@ -239,37 +239,39 @@
 % SLIDE 7: Why Era 1 Hit a Ceiling (Limitations)
 % ======================================================================
 \begin{frame}{Why Era 1 Hit a Plateau: The Pixel Bottleneck}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{alertblock}{1. Complete Spatial Blindness}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.32\textwidth}
+      \begin{alertblock}{1. Spatial Blindness}
         A single pixel has zero context:
         \begin{itemize}
-          \item Typical confusions between dark rock/algae from dense seagrass.
-          \item Produces noise models.
+          \item Ignores texture and shape, confusing rock or algae with seagrass.
+          \item Produces fragmented, noisy maps.
         \end{itemize}
       \end{alertblock}
-      \vspace{0.1cm}
-      \begin{alertblock}{2. The Mixed Pixel Dilemma}
+    \end{column}
+    
+    \begin{column}{0.32\textwidth}
+      \begin{alertblock}{2. Mixed Pixels}
         At 10--20\,m resolution:
         \begin{itemize}
-          \item Boundary pixels mix canopy shoots with bare sediment (sand/mud), rock, or decaying organic matte.
-          \item Hard classifiers force a wrong binary choice.
+          \item Meadow edges mix seagrass with bare sand, mud, or rock.
+          \item Hard classifiers force an unrealistic binary (0/1) choice.
         \end{itemize}
       \end{alertblock}
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{alertblock}{3. Sensitivity to Water Perturbations}
+    
+    \begin{column}{0.32\textwidth}
+      \begin{alertblock}{3. Water Noise}
+        Single pixels are fragile:
         \begin{itemize}
-          \item Wave lenses, sun glint, and turbidity spikes distort single-pixel spectra.
-          \item Models hallucinate spurious meadow loss/gain.
+          \item Waves, sun glint, and turbidity easily distort individual spectra.
+          \item Triggers false alarms of meadow loss or gain over time.
         \end{itemize}
       \end{alertblock}
-      \vspace{0.1cm}
-      \begin{block}{Ad-Hoc Filters Failed}
-        Morphological post-filtering (median filters) blurred real meadow borders and erased small patches.
-      \end{block}
     \end{column}
   \end{columns}
+
+  \vspace{0.3cm}
 \end{frame}
 
 % ======================================================================
@@ -292,7 +294,7 @@
       \textbf{The Deep Learning Revolution (Era 2):}
       \begin{itemize}
         \item Convolutional Neural Networks (CNNs) are able to learn spatial-spectral patterns directly from image patches.
-        \item They have been invented more than 35 years ago, and have been widely used in computer vision since 2012.
+        \item They were invented more than 35 years ago, and have been widely used in computer vision since 2012.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -312,18 +314,19 @@
       \textbf{What Segmentation Solves:}
       \begin{itemize}\setlength{\itemsep}{1.2pt}
         \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
-        \item \textbf{Processing images at once: } U-Net like netorks can process entire tiles at once, capturing global context.
-        \item \textbf{Whats a U-Net?}: A U shape deep learning architecture with encoder-decoder structure and skip connections.
+        \item \textbf{Processing images at once: } U-Net like networks can process entire tiles at once, capturing global context.
+        \item \textbf{What's a U-Net?:} A U shaped deep learning architecture with encoder-decoder structure and skip connections.
       \end{itemize}
     \end{column}
     \begin{column}{0.50\textwidth}
       \begin{alertblock}{The Bottleneck: Hand Annotation}
         \footnotesize
         Supervised models demand \textbf{dense pixel-level ground truth}:
+        \vspace{-0.5em}
         \begin{itemize}\setlength{\itemsep}{1pt}
-          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices in a image is very time consuming and dificult.
+          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices in a image is very time consuming and difficult.
           \item \textbf{Limited Coverage:} Dense annotations are often only available for small areas, limiting model generalization.
-          \item \textbf{Road to Era 3:} This problems motivate the use of self-supervised learning and foundation models.
+          \item \textbf{Road to Era 3:} These problems motivate the use of self-supervised learning and foundation models.
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -465,7 +468,7 @@ Domain adaptation and field validation remain essential.
       \begin{block}{1. One Embedding per Tile}
         \footnotesize
         \begin{itemize}\setlength{\itemsep}{3pt}
-          \item Input: a $224\times224px$ satellite tile.
+          \item Input: a $224px\times224px$ satellite tile.
           \item TerraMind produces a single
             \textbf{tile-level representation}
             $\mathbf{z}\in\mathbb{R}^{d}$.
@@ -506,19 +509,19 @@ Domain adaptation and field validation remain essential.
     \midrule
     \textbf{Data Representation} & 1D vector $\mathbf{x} \in \mathbb{R}^B$ & 2D/3D patch $\mathbf{X} \in \mathbb{R}^{H \times W \times B}$ & Multi-modal latent representations \\
     \addlinespace[3pt]
-    \textbf{Spatial Context} & Completely blind ($0\%$) & Patch context & Global context \\
+    \textbf{Spatial Context} & Completely blind & Patch context & Global context \\
     \addlinespace[3pt]
     \textbf{Label Dependency} & High (per-pixel labels) & High (patches or dense masks) & Very low (few-shot / zero-shot) \\
     \addlinespace[3pt]
-    \textbf{Core Methodologies} & SVM, Random Forest, etc & CNNs, ViTs, U-Nets & Masked Autoencoders, BioCLIP, SAM \\
+    \textbf{Core Methodologies} & SVM, Random Forest, etc & CNNs, ViTs, U-Nets, etc & Masked Autoencoders, BioCLIP, SAM, etc \\
     \addlinespace[3pt]
-    \textbf{Main Limitation} & Models noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
+    \textbf{Main Limitation} & Sensitive to noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
     \bottomrule
   \end{tabular}
   }
   \end{center}
   \vspace{0.2cm}
-  \begin{exampleblock}{The Common Blindspot}
+  \begin{exampleblock}{The common blindspot}
     \centering
     All three eras share one critical vulnerability when taken out of the lab:
     
@@ -537,7 +540,7 @@ Domain adaptation and field validation remain essential.
   \vspace{0.3cm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \begin{block}{The Standard Machine Learning Assumption}
+      \begin{block}{The Standard ML Assumption}
         Training and test data are \textbf{Independent and Identically Distributed (i.i.d.)}:
         \begin{equation*}
           P_{\text{train}}(X, Y) \equiv P_{\text{test}}(X, Y)
