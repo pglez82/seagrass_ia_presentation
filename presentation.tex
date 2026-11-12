@@ -45,6 +45,18 @@
 \setlength{\metropolis@blockadjust}{0.3ex}
 \makeatother
 
+% Bottom citations / references for slides anchored to the absolute bottom
+\newcommand{\slidecite}[1]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=south west, inner sep=0pt, xshift=0.8cm, yshift=0.25cm] at (current page.south west) {%
+      \begin{minipage}{\dimexpr\paperwidth-2.6cm\relax}
+        {\color{OceanDark!25}\rule{\linewidth}{0.4pt}}\par\vspace{1.5pt}%
+        {\raggedright\tiny\color{OceanDark!75}#1\par}%
+      \end{minipage}%
+    };
+  \end{tikzpicture}%
+}
+
 % ----------------------------------------------------------------------
 % Presentation Metadata
 % ----------------------------------------------------------------------
@@ -306,9 +318,6 @@
   \end{columns}
 \end{frame}
 
-% ======================================================================
-% SLIDE 9: From Patch Classification to Dense Segmentation (U-Net)
-% ======================================================================
 \begin{frame}{From Patch Classification to Segmentation (U-Net)}
   \centering
   \includegraphics[height=1.95cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
@@ -389,7 +398,7 @@
 \end{frame}
 
 
-\begin{frame}{Foundation Models for Earth Monitoring}
+\begin{frame}[t]{Foundation Models for Earth Monitoring}
 \small
 
 \begin{columns}[T,onlytextwidth]
@@ -397,18 +406,18 @@
 \begin{column}{0.49\textwidth}
   \textbf{1. Earth Observation}
 
-  \vspace{0.1cm}
+  \vspace{0.05cm}
   \begin{itemize}
-    \setlength{\itemsep}{0.18cm}
+    \setlength{\itemsep}{0.08cm}
 
-    \item \textbf{Prithvi / SatMAE}
+    \item \textbf{Prithvi}\textsuperscript{\color{OceanTeal}[1]} / \textbf{SatMAE}
     \begin{itemize}
       \item \textit{Masked reconstruction}
       \item Reconstruct hidden satellite patches
       to learn spectral and spatial patterns.
     \end{itemize}
 
-    \item \textbf{TerraMind}
+    \item \textbf{TerraMind}\textsuperscript{\color{OceanTeal}[2]}
     \begin{itemize}
       \item \textit{Cross-modal prediction}
       \item Predict missing geospatial modalities
@@ -420,38 +429,30 @@
 \begin{column}{0.49\textwidth}
   \textbf{2. Promptable Segmentation}
 
-  \vspace{0.1cm}
+  \vspace{0.05cm}
   \begin{itemize}
-    \setlength{\itemsep}{0.18cm}
+    \setlength{\itemsep}{0.08cm}
 
-    \item \textbf{Segment Anything (SAM)}
+    \item \textbf{Segment Anything (SAM)}\textsuperscript{\color{OceanTeal}[3]}
     \begin{itemize}
       \item \textit{Prompt-to-mask prediction}
       \item Given a point or bounding box,
       predict the corresponding object mask.
     \end{itemize}
-
-    
   \end{itemize}
 \end{column}
 
 \end{columns}
 
-\vspace{0.15cm}
-\hrule
-\vspace{0.12cm}
 
-\centering
-\footnotesize
-\textbf{Transferable representations and segmentation tools}
-\\
-Domain adaptation and field validation remain essential.
+\slidecite{%
+  \textsuperscript{[1]} Jakubik et al.\ (NASA/IBM), \textit{Foundation Models for Generalist Geospatial AI}, arXiv:2310.18660 (2023).\\[0.8pt]
+  \textsuperscript{[2]} Jakubik et al., \textit{TerraMind: Large-Scale Generative Multimodality for Earth Observation}, IEEE/CVF ICCV, pp.~7383--7394 (2025).\\[0.8pt]
+  \textsuperscript{[3]} Kirillov et al.\ (Meta AI), \textit{Segment Anything}, IEEE/CVF ICCV, pp.~4015--4026 (2023).%
+}
 
 \end{frame}
 
-% ======================================================================
-% SLIDE 13: Operational Example: Foundation Model Embeddings in Seagrass
-% ======================================================================
 \begin{frame}{TerraMind in Practice: From Tiles to Spatial Embeddings}
   \centering
   \includegraphics[height=3.5cm,keepaspectratio]
@@ -533,18 +534,21 @@ Domain adaptation and field validation remain essential.
     so why did it fail completely when deployed next summer?''}
   \end{center}
   \vspace{0.3cm}
-  \begin{columns}[T]
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \begin{block}{The Standard ML Assumption}
-        Training and test data are \textbf{Independent and Identically Distributed (i.i.d.)}:
+        Training and test data are assumed\\
+        independent and identically distributed:
         \begin{equation*}
           P_{\text{train}}(X, Y) \equiv P_{\text{test}}(X, Y)
         \end{equation*}
+        $\Rightarrow$ \textbf{Stationary environment.}
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{alertblock}{The Marine Reality}
-        The ocean is an inherently dynamic, non-stationary environment:
+        The ocean is an inherently dynamic,\\
+        non-stationary coastal environment:
         \begin{equation*}
           P_{\text{train}}(X, Y) \neq P_{\text{deployment}}(X, Y)
         \end{equation*}
@@ -560,7 +564,7 @@ Domain adaptation and field validation remain essential.
 % ======================================================================
 % SLIDE 15: What is Dataset Shift?
 % ======================================================================
-\begin{frame}{Deconstructing Dataset Shift in Seagrass Monitoring}
+\begin{frame}{Dataset Shift in Seagrass Monitoring}
   By the chain rule of probability, the joint distribution of observations $X$ and habitats $Y$ is:
   \begin{equation*}
     P(X, Y) = P(Y \mid X) \, P(X) = P(X \mid Y) \, P(Y)
