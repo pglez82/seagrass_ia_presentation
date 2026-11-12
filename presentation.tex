@@ -565,19 +565,22 @@
 % SLIDE 15: What is Dataset Shift?
 % ======================================================================
 \begin{frame}{Dataset Shift in Seagrass Monitoring}
-  By the chain rule of probability, the joint distribution of observations $X$ and habitats $Y$ is:
+  \small
+  Standard classifiers assume data are i.i.d.\ ($P_{\text{train}} = P_{\text{test}}$). When this breaks down, \textbf{dataset shift} occurs, categorized into three fundamental types\textsuperscript{\color{OceanTeal}[1]}.
+  
+  By factorizing the joint distribution of the covariates $X$ and labels $Y$, we can express the relationship as:
   \begin{equation*}
     P(X, Y) = P(Y \mid X) \, P(X) = P(X \mid Y) \, P(Y)
   \end{equation*}
 
-  \vspace{0.2cm}
-  \begin{columns}[T]
+  \vspace{0.05cm}
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.32\textwidth}
       \begin{block}{Covariate Shift}
         $P(X)$ changes,\\
         $P(Y \mid X)$ remains fixed.
-        \vspace{0.25cm}
-        \small
+        \vspace{0.15cm}
+        \footnotesize
         
         \textit{Example:} Water turbidity or illumination changes, but the true habitat boundary does not move.
       \end{block}
@@ -586,8 +589,8 @@
       \begin{alertblock}{Concept Shift}
         $P(Y \mid X)$ changes,\\
         $P(X)$ could change.
-        \vspace{0.25cm}
-        \small
+        \vspace{0.15cm}
+        \footnotesize
 
         \textit{Example:}  Accumulations of dead algae covering the bottom change how a living seagrass meadow looks.
       \end{alertblock}
@@ -596,13 +599,17 @@
       \begin{exampleblock}{Prior Shift}
         $P(Y)$ changes,\\
         $P(X \mid Y)$ remains fixed.
-        \vspace{0.25cm}
-        \small
+        \vspace{0.15cm}
+        \footnotesize
 
         \textit{Example:} Moving from a dense continuous reserve (70\% cover) to a fragmented urbanized bay (5\% cover).
       \end{exampleblock}
     \end{column}
   \end{columns}
+
+  \slidecite{%
+    \textsuperscript{[1]} Moreno-Torres et al., \textit{A unifying view on dataset shift in machine learning}, Pattern Recognition, 45(1), pp.~521--530 (2012).%
+  }
 \end{frame}
 
 
