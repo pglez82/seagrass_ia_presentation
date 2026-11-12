@@ -92,17 +92,22 @@
       \end{itemize}
       \vspace{0.1cm}
       \begin{alertblock}{The Operational Bottleneck}
-        In situ sampling and manual labelling are \textbf{costly, localized, and temporally sparse}.
+        In situ sampling and manual labelling are \textbf{costly, localized, and temporally sparse}\textsuperscript{\color{OceanTeal}[1]}.
       \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
       \centering
-      \includegraphics[width=\linewidth, height=4cm, keepaspectratio]{figures/posidonia_underwater.png}\\[3pt] 
+      \includegraphics[width=\linewidth, height=3.6cm, keepaspectratio]{figures/posidonia_underwater.png}\\[3pt] 
       \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
-      \vspace{0.3cm}
+      \vspace{0.2cm}
     \end{column}
   \end{columns}
-  \Large \centering \textit{How can AI turn sparse observation into continuous, operational monitoring?}
+  \vspace{0.1cm}
+  \centering \large \textit{How can AI turn sparse observation into continuous, operational monitoring?}
+
+  \slidecite{%
+    \textsuperscript{[1]} Ruiz et al.\ (Eds.), \textit{Atlas de las praderas de fanerógamas marinas de España}, IEO/IEL/UICN, Murcia-Palma de Mallorca (2015).%
+  }
 \end{frame}
 
 % ======================================================================
@@ -224,31 +229,34 @@
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
       \textbf{Core Assumption:}
-      \begin{itemize}
-        \item Each pixel vector $\mathbf{x} \in \mathbb{R}^B$ is treated as an independent statistical sample.
-        \item The spatial coordinates of the pixel are ignored.
-        \item The context of the pixel is not used to inform the classification.
+      \begin{itemize}\setlength{\itemsep}{1pt}\small
+        \item Each pixel vector $\mathbf{x} \in \mathbb{R}^B$ is an independent statistical sample.
+        \item Spatial coordinates and neighborhood context are ignored.
       \end{itemize}
-      \vspace{0.15cm}
+      \vspace{0.1cm}
       \textbf{Advantages:}
-      \begin{itemize}
-        \item Simple and fast to implement.
-        \item Publicly available libraries for typical classifiers.
-        \item Works well for large, homogeneous meadows with clear spectral signatures.
+      \begin{itemize}\setlength{\itemsep}{1pt}\small
+        \item Simple and fast to implement with standard libraries.
+        \item Works well for large, homogeneous dense meadows.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Traditional Classifiers}
-        \begin{itemize}
-          \item \textbf{Multilayer Perceptron (MLP):} A feedforward neural network with multiple layers.
-          \item \textbf{Support Vector Machines (SVM):} Maximum-margin kernel hyperplanes.
-          \item \textbf{Random Forest (RF):} Ensemble of decision trees; the dominant baseline.
+        \begin{itemize}\setlength{\itemsep}{1pt}\small
+          \item \textbf{Multilayer Perceptron (MLP):} Feedforward network.
+          \item \textbf{Support Vector Machines (SVM):} Kernel hyperplanes.
+          \item \textbf{Random Forest (RF):} Decision tree ensemble baseline.
         \end{itemize}
       \end{block}
-      \vspace{0.1cm}
-      \small Standard pipeline: Sentinel-2/Landsat + field points $\rightarrow$ Random Forest pixel classification.
+      \vspace{0.08cm}
+      \small Standard pipeline: Water column correction\textsuperscript{\color{OceanTeal}[1]} + satellite bands $\rightarrow$ Random Forest pixel classification\textsuperscript{\color{OceanTeal}[2]}.
     \end{column}
   \end{columns}
+
+  \slidecite{%
+    \textsuperscript{[1]} Lyzenga, \textit{Passive remote sensing techniques for mapping water depth and bottom features}, Applied Optics, 17(3), pp.~379--383 (1978).\\[0.8pt]
+    \textsuperscript{[2]} Traganos \& Reinartz, \textit{Mapping Mediterranean seagrasses with Sentinel-2 imagery}, Frontiers in Plant Science, 9:1398 (2018).%
+  }
 \end{frame}
 
 
@@ -320,27 +328,31 @@
 
 \begin{frame}{From Patch Classification to Segmentation (U-Net)}
   \centering
-  \includegraphics[height=1.95cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
+  \includegraphics[height=1.65cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
   
   \vspace{0.05cm}
-  \begin{columns}[T]
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \textbf{What Segmentation Solves:}
-      \begin{itemize}\setlength{\itemsep}{1.2pt}
-        \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
-        \item \textbf{Processing images at once: } U-Net like networks can process entire tiles at once, capturing global context.
-        \item \textbf{What's a U-Net?:} A U shaped deep learning architecture with encoder-decoder structure and skip connections.
+      \begin{itemize}\setlength{\itemsep}{1pt}\small
+        \item \textbf{End-to-End Dense Mapping:} Direct $H \times W$ tile $\rightarrow$ habitat mask in one pass (no sliding patches).
+        \item \textbf{Full-Tile Spatial Context:} Captures meadow morphology, continuous edges, and patchiness.
+        \item \textbf{U-Net Architecture:} Encoder-decoder network with skip connections\textsuperscript{\color{OceanTeal}[1]}.
       \end{itemize}
     \end{column}
-    \begin{column}{0.50\textwidth}
-        \textbf{Labelling problem:}:
-        \begin{itemize}\setlength{\itemsep}{1pt}
-          \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices in a image is very time consuming and difficult.
-          \item \textbf{Limited Coverage:} Dense annotations are often only available for small areas, limiting model generalization.
-          \item \textbf{Road to Era 3:} These problems motivate the use of self-supervised learning and foundation models.
-        \end{itemize}
+    \begin{column}{0.49\textwidth}
+      \textbf{The Labelling Bottleneck:}
+      \begin{itemize}\setlength{\itemsep}{1pt}\small
+        \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices per image is slow and subjective.
+        \item \textbf{Limited Ground Truth:} Dense pixel annotations exist only for tiny localized survey areas.
+        \item \textbf{Road to Era 3:} Motivates self-supervised pre-training on unlabeled satellite archives.
+      \end{itemize}
     \end{column}
   \end{columns}
+
+  \slidecite{%
+    \textsuperscript{[1]} Scarpetta et al., \textit{Monitoring of Seagrass Meadows Using Satellite Images and U-Net Convolutional Neural Network}, IEEE I2MTC, pp.~1--6 (2022).%
+  }
 \end{frame}
 
 
