@@ -139,9 +139,9 @@
   \begin{tikzpicture}[
     scale=0.88, every node/.style={transform shape},
     card/.style={
-      rectangle, rounded corners=6pt,
-      minimum width=4.3cm, text width=4.1cm, minimum height=4.3cm,
-      inner sep=6pt, align=left, drop shadow={opacity=0.25, shadow xshift=2pt, shadow yshift=-2pt}
+      rectangle, rounded corners=6pt, anchor=north,
+      minimum width=4.3cm, text width=4.1cm, minimum height=5.35cm,
+      inner sep=6pt, align=left, drop shadow={opacity=0.22, shadow xshift=2pt, shadow yshift=-2pt}
     },
     chevron/.style={
       single arrow, draw=OceanTeal!90, fill=OceanTeal!30, line width=1.1pt,
@@ -151,49 +151,50 @@
     }
   ]
     % Era 1 Card
-    \node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 1.35) {
+    \node[card, fill=OceanMedium!10, draw=OceanMedium, line width=1.3pt] (era1) at (0, 3.8) {
       {\centering \textbf{\small Era 1: Pixel-by-Pixel}\par}
       \vspace{1.5pt}
       {\centering \textit{\scriptsize Spectral Paradigm (2000--)}\par}
       \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
       \scriptsize
-      $\bullet$ \textbf{Input:} Each of the pixels in the image\\[2.5pt]
-      $\bullet$ \textbf{Context:} No spatial context\\[2.5pt]
-      $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest, etc\\[2.5pt]
-      $\bullet$ \textbf{Limitation:} Sensitive to noise; ignores spatial patterns.
+      $\bullet$ \textbf{Input:} Single-pixel vector $\mathbf{x} \in \mathbb{R}^B$\\[2.5pt]
+      $\bullet$ \textbf{Context:} None (isolated pixels)\\[2.5pt]
+      $\bullet$ \textbf{Features:} Raw bands \& indices (NDVI)\\[2.5pt]
+      $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest\\[2.5pt]
+      $\bullet$ \textbf{Bottleneck:} Salt-\&-pepper noise; ignores spatial structure
     };
 
     % Era 2 Card
-    \node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 1.35) {
+    \node[card, fill=SeagrassGreen!10, draw=SeagrassGreen, line width=1.3pt] (era2) at (5.3, 3.8) {
       {\centering \textbf{\small Era 2: Deep Learning}\par}
       \vspace{1.5pt}
       {\centering \textit{\scriptsize Spatial Context Paradigm (2015--)}\par}
       \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
       \scriptsize
-      $\bullet$ \textbf{Input:} Image tensor\\[2.5pt]
-      $\bullet$ \textbf{Context:} Learns spatial-spectral patterns\\[2.5pt]
-      $\bullet$ \textbf{Features:} Hierarchical features (edges, textures, etc.)\\[2.5pt]
-      $\bullet$ \textbf{Methods:} CNNs, U-Net, ViTs, etc.\\[2.5pt]
-      $\bullet$ \textbf{Limitation:} Needs task-specific labels
+      $\bullet$ \textbf{Input:} Image patch or tile\\[2.5pt]
+      $\bullet$ \textbf{Context:} Local spatial neighborhood\\[2.5pt]
+      $\bullet$ \textbf{Features:} Hierarchical edges \& textures\\[2.5pt]
+      $\bullet$ \textbf{Methods:} CNNs, U-Net, ViTs\\[2.5pt]
+      $\bullet$ \textbf{Bottleneck:} Requires extensive dense pixel-level annotations
     };
 
     % Era 3 Card
-    \node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 1.35) {
+    \node[card, fill=OceanTeal!10, draw=OceanTeal, line width=1.3pt] (era3) at (10.6, 3.8) {
       {\centering \textbf{\small Era 3: Foundation Models}\par}
       \vspace{1.5pt}
       {\centering \textit{\scriptsize Large-Scale Pre-training (2020s--)}\par}
       \vspace{4pt}\hrule height 0.6pt\vspace{5pt}
       \scriptsize
-      $\bullet$ \textbf{Input:} Image tensor\\[2.5pt]
-      $\bullet$ \textbf{Context:} Patterns learned across large datasets\\[2.5pt]
-      $\bullet$ \textbf{Pre-training:} Uses unlabelled imagery data\\[2.5pt]
-      $\bullet$ \textbf{Models:} Prithvi, SatMAE, TerraMind, etc.\\[2.5pt]
-      $\bullet$ \textbf{Adaptation:} Linear probes, fine-tuning, few-shot
+      $\bullet$ \textbf{Input:} Multi-sensor satellite tiles\\[2.5pt]
+      $\bullet$ \textbf{Context:} Global spatial \& cross-modal\\[2.5pt]
+      $\bullet$ \textbf{Pre-training:} Self-supervised (unlabeled)\\[2.5pt]
+      $\bullet$ \textbf{Models:} Prithvi, SatMAE, TerraMind, SAM\\[2.5pt]
+      $\bullet$ \textbf{Adaptation:} Few-shot tuning / linear probing
     };
 
     % High-impact graphical chevron arrows between cards
-    \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west) + (0,-0.4)$) {};
-    \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west) + (0,-0.4)$) {};
+    \node[chevron] (arrow1) at ($(era1.east)!0.5!(era2.west)$) {};
+    \node[chevron] (arrow2) at ($(era2.east)!0.5!(era3.west)$) {};
 
     % Clean pill badges above chevrons
     \node[font=\tiny\bfseries, color=OceanMedium, fill=white, draw=OceanMedium!60, line width=0.7pt, rounded corners=2.5pt, inner sep=2pt, drop shadow={opacity=0.15}] 
@@ -204,14 +205,13 @@
     % -------------------------------------------------------------
     % BIG BOTTOM ARROWS / RIBBONS (Shifted down via scope)
     % -------------------------------------------------------------
-    \begin{scope}[yshift=-0.8cm]
+    \begin{scope}[yshift=-3.3cm]
       % Big Arrow 1: Increasing Context (pointing right)
-      \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, -1.30) rectangle (12.1, -0.90);
-      \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, -0.75) -- (12.7, -1.10) -- (12.1, -1.45) -- cycle;
-      \node[font=\footnotesize\bfseries, color=white] at (5.1, -1.10) {
+      \fill[SeagrassGreen, rounded corners=3pt, drop shadow={opacity=0.2}] (-2.0, 0.2) rectangle (12.1, 0.6);
+      \fill[SeagrassGreen, drop shadow={opacity=0.2}] (12.1, 0.75) -- (12.7, 0.40) -- (12.1, 0.05) -- cycle;
+      \node[font=\footnotesize\bfseries, color=white] at (5.1, 0.40) {
         Increasing Spatial \& Semantic Context 
       };
-
     \end{scope}
 
   \end{tikzpicture}
