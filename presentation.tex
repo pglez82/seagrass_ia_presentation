@@ -39,6 +39,12 @@
 % Slide numbering
 \setbeamertemplate{frame numbering}[fraction]
 
+% Adjust block padding so block text does not touch borders
+\makeatletter
+\setlength{\metropolis@blocksep}{1.1ex}
+\setlength{\metropolis@blockadjust}{0.3ex}
+\makeatother
+
 % ----------------------------------------------------------------------
 % Presentation Metadata
 % ----------------------------------------------------------------------
@@ -79,7 +85,7 @@
     \end{column}
     \begin{column}{0.44\textwidth}
       \centering
-      \includegraphics[width=\linewidth, height=3.3cm, keepaspectratio]{figures/posidonia_underwater.jpg}\\[3pt]
+      \includegraphics[width=\linewidth, height=4cm, keepaspectratio]{figures/posidonia_underwater.png}\\[3pt] 
       \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
       \vspace{0.3cm}
     \end{column}
@@ -116,7 +122,7 @@
 % ======================================================================
 % SLIDE 4: THE CENTRAL PLOT: The Three Eras of AI in Seagrass Mapping
 % ======================================================================
-\begin{frame}{The Central Evolution: Three Eras of Marine AI}
+\begin{frame}{Evolution: Three Eras of Seagrass Automated Mapping}
   \centering
   \begin{tikzpicture}[
     scale=0.88, every node/.style={transform shape},
@@ -310,7 +316,6 @@
   \vspace{0.05cm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \footnotesize
       \textbf{What Segmentation Solves:}
       \begin{itemize}\setlength{\itemsep}{1.2pt}
         \item \textbf{End-to-End Mapping:} Direct transformation of $H \times W$ tile $\rightarrow$ $H \times W$ habitat mask in one forward pass (no sliding patch artifacts).
@@ -319,81 +324,71 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.50\textwidth}
-      \begin{alertblock}{The Bottleneck: Hand Annotation}
-        \footnotesize
-        Supervised models demand \textbf{dense pixel-level ground truth}:
-        \vspace{-0.5em}
+        \textbf{Labelling problem:}:
         \begin{itemize}\setlength{\itemsep}{1pt}
           \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices in a image is very time consuming and difficult.
           \item \textbf{Limited Coverage:} Dense annotations are often only available for small areas, limiting model generalization.
           \item \textbf{Road to Era 3:} These problems motivate the use of self-supervised learning and foundation models.
         \end{itemize}
-      \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ======================================================================
-% SLIDE 11: Era 3: The Label Scarcity Dilemma
-% ======================================================================
-\begin{frame}{Era 3: Foundation Models -- Learning Without Labels}
 
+\begin{frame}{Era 3: Foundation Models: Learning Without Labels}
+\vspace{0.1cm}
 \begin{alertblock}{The Marine Label Bottleneck}
   Annotating underwater imagery is expensive and time-consuming,
   while vast amounts of satellite and marine imagery remain unlabeled.
 \end{alertblock}
 
-\vspace{0.15cm}
-
 \begin{columns}[T,onlytextwidth]
   \begin{column}{0.48\textwidth}
-    \begin{block}{Large Language Models (ChatGPT, Gemini, etc)}
+    \begin{block}{Large Language Models\\(ChatGPT, Gemini, etc)}
       \centering
       \textbf{Predict the next token}
 
-      \vspace{0.15cm}
-      The cat sat on the \textcolor{blue}{\textbf{?}}
+      \vspace{0.08cm}
+      Read previous words;\\
+      predict the next one: \textcolor{blue}{\textbf{?}}
 
-      \vspace{0.1cm}
+      \vspace{0.08cm}
       \footnotesize
-      \textit{Training data:} enormous text corpora
-      collected from books, websites and other sources.
+      \textit{Training data:} enormous text corpora\\
+      collected from web, books, etc.
     \end{block}
   \end{column}
 
   \begin{column}{0.48\textwidth}
-    \begin{exampleblock}{Earth Observation Models}
+    \begin{exampleblock}{Earth Observation Models\\(Prithvi, TerraMind, etc)}
       \centering
       \textbf{Predict masked image patches}
 
-      \vspace{0.15cm}
-      Observe surrounding patches; reconstruct the hidden region.
+      \vspace{0.08cm}
+      Observe surrounding patches;\\
+      reconstruct the hidden region.
 
-      \vspace{0.1cm}
+      \vspace{0.08cm}
       \footnotesize
-      \textit{Training data:} massive collections of
+      \textit{Training data:} massive collections of\\
       unlabeled satellite imagery.
     \end{exampleblock}
   \end{column}
 \end{columns}
 
-\vspace{0.15cm}
-
-\begin{center}
+\vspace{0.1cm}
+{\centering
   \Large
-  \textbf{Self-supervised learning: learn from the data itself}
-\end{center}
-
-\vspace{0.05cm}
-\centering
-\footnotesize
-Pretrain on abundant unlabeled data; adapt to seagrass mapping
-with a much smaller set of labeled examples.
+  \textbf{Self-supervised learning: learn from the data itself}\par
+  \vspace{0.05cm}
+  \footnotesize
+  Pretrain on abundant unlabeled data; adapt to seagrass mapping
+  with a much smaller set of labeled examples.\par
+}
 
 \end{frame}
-% ======================================================================
-% SLIDE 12: Foundation Models & Self-Supervised Learning
-% ======================================================================
+
+
 \begin{frame}{Foundation Models for Earth Monitoring}
 \small
 
