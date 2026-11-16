@@ -18,5 +18,6 @@
 *.ilg
 .log
 *.pdf
+!presentation.pdf
 slides_preview
 *.xdv

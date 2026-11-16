@@ -9,6 +9,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{microtype}
 \usepackage{graphicx}
+\usepackage{qrcode}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric, shapes.arrows, backgrounds, fit, calc, shadows}
 
@@ -45,6 +46,15 @@
 \setlength{\metropolis@blockadjust}{0.3ex}
 \makeatother
 
+% Teal block environment to match Era 3
+\newenvironment{tealblock}[1]{%
+  \setbeamercolor{block title}{fg=white, bg=OceanTeal}%
+  \setbeamercolor{block body}{fg=OceanDark, bg=OceanTeal!10}%
+  \begin{block}{#1}%
+}{%
+  \end{block}%
+}
+
 % Bottom citations / references for slides anchored to the absolute bottom
 \newcommand{\slidecite}[1]{%
   \begin{tikzpicture}[remember picture, overlay]
@@ -64,8 +74,7 @@
 \subtitle{From Classical Pixels to Foundation Models --- and the Challenge of Dataset Shift}
 \author{\textbf{Pablo González}$^{1}$ \and \textbf{Fernando García-González}$^{2}$}
 \institute{
-  $^{1}$Artificial Intelligence Center (AIC), Universidad de Oviedo\\
-  $^{2}$Instituto Español de Oceanografía (IEO-CSIC)
+  $^{1}$Artificial Intelligence Center (AIC), Universidad de Oviedo \quad $^{2}$IEO-CSIC
 }
 \date{CartoGrass Workshop --- 2026}
 
@@ -92,17 +101,17 @@
       \end{itemize}
       \vspace{0.1cm}
       \begin{alertblock}{The Operational Bottleneck}
-        In situ sampling and manual labelling are \textbf{costly, localized, and temporally sparse}\textsuperscript{\color{OceanTeal}[1]}.
+        \textit{In situ} sampling and manual labeling are \textbf{costly, localized, and temporally sparse}\textsuperscript{\color{OceanTeal}[1]}.
       \end{alertblock}
     \end{column}
     \begin{column}{0.44\textwidth}
       \centering
       \includegraphics[width=\linewidth, height=3.6cm, keepaspectratio]{figures/posidonia_underwater.png}\\[3pt] 
-      \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g. \textit{Posidonia oceanica}).}\par
+      \textit{\scriptsize Submerged seagrass canopy in coastal waters (e.g., \textit{Posidonia oceanica}).}\par
       \vspace{0.2cm}
     \end{column}
   \end{columns}
-  \vspace{0.1cm}
+  \vspace{0.05cm}
   \centering \large \textit{How can AI turn sparse observation into continuous, operational monitoring?}
 
   \slidecite{%
@@ -124,11 +133,11 @@
       \textbf{So many sources of data:}
       \begin{itemize}
         \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
-        {\footnotesize Global or nearly global coverage; 5-day revisit; 10m resolution; historical archives ($>30$ yrs).}
+        {\footnotesize Global or nearly global coverage; 5-day revisit; 10\,m resolution; historical archives ($>30$ yrs).}
         \item \textbf{Drones (UAVs):}\newline
         {\footnotesize Centimetric detail (1--5\,cm); rapid deployment; local surveys.}
         \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
-        {\footnotesize Millimetric in situ validation. }
+        {\footnotesize Millimetric \textit{in situ} validation.}
         \item \textbf{Acoustics (MBES, Side-Scan Sonar):}\newline
         {\footnotesize High-resolution bathymetry and seafloor mapping.}
       \end{itemize}
@@ -271,7 +280,7 @@
         A single pixel has zero context:
         \begin{itemize}
           \item Ignores texture and shape, confusing rock or algae with seagrass.
-          \item Produces fragmented, noisy maps.
+          \item Produces fragmented, noisy maps (salt-\&-pepper noise).
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -297,7 +306,8 @@
     \end{column}
   \end{columns}
 
-  \vspace{0.3cm}
+  \vspace{0.25cm}
+  \centering \small \textit{Result: Fragmented maps that fail at meadow boundaries and require tedious manual cleaning.}\par
 \end{frame}
 
 % ======================================================================
@@ -305,10 +315,10 @@
 % ======================================================================
 \begin{frame}{Era 2: Why Spatial Context Matters --- From Pixels to Patches}
   \centering
-  \includegraphics[width=\textwidth, height=3.55cm, keepaspectratio]{figures/pixel_vs_patch_context.png}
+  \includegraphics[width=\textwidth, height=2.85cm, keepaspectratio]{figures/pixel_vs_patch_context.png}
   
-  \vspace{0.15cm}
-  \begin{columns}[T]
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \textbf{The Single Pixel Dilemma (Era 1):}
       \begin{itemize}
@@ -328,7 +338,7 @@
 
 \begin{frame}{From Patch Classification to Segmentation (U-Net)}
   \centering
-  \includegraphics[height=1.65cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
+  \includegraphics[height=2.1cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
   
   \vspace{0.05cm}
   \begin{columns}[T,onlytextwidth]
@@ -341,11 +351,11 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.49\textwidth}
-      \textbf{The Labelling Bottleneck:}
+      \textbf{The Labeling Bottleneck:}
       \begin{itemize}\setlength{\itemsep}{1pt}\small
         \item \textbf{Extreme Manual Effort:} Tracing hundreds of polygon vertices per image is slow and subjective.
         \item \textbf{Limited Ground Truth:} Dense pixel annotations exist only for tiny localized survey areas.
-        \item \textbf{Road to Era 3:} Motivates self-supervised pre-training on unlabeled satellite archives.
+        \item \textbf{Road to Era 3:} Motivates self-supervised pretraining on unlabeled satellite archives.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -357,55 +367,52 @@
 
 
 \begin{frame}{Era 3: Foundation Models: Learning Without Labels}
-\vspace{0.1cm}
-\begin{alertblock}{The Marine Label Bottleneck}
-  Annotating underwater imagery is expensive and time-consuming,
-  while vast amounts of satellite and marine imagery remain unlabeled.
-\end{alertblock}
-
-\begin{columns}[T,onlytextwidth]
-  \begin{column}{0.48\textwidth}
-    \begin{block}{Large Language Models\\(ChatGPT, Gemini, etc)}
-      \centering
-      \textbf{Predict the next token}
-
-      \vspace{0.08cm}
-      Read previous words;\\
-      predict the next one: \textcolor{blue}{\textbf{?}}
-
-      \vspace{0.08cm}
-      \footnotesize
-      \textit{Training data:} enormous text corpora\\
-      collected from web, books, etc.
-    \end{block}
-  \end{column}
-
-  \begin{column}{0.48\textwidth}
-    \begin{exampleblock}{Earth Observation Models\\(Prithvi, TerraMind, etc)}
-      \centering
-      \textbf{Predict masked image patches}
-
-      \vspace{0.08cm}
-      Observe surrounding patches;\\
-      reconstruct the hidden region.
-
-      \vspace{0.08cm}
-      \footnotesize
-      \textit{Training data:} massive collections of\\
-      unlabeled satellite imagery.
-    \end{exampleblock}
-  \end{column}
-\end{columns}
-
-\vspace{0.1cm}
-{\centering
-  \Large
-  \textbf{Self-supervised learning: learn from the data itself}\par
+  \vspace{-0.15cm}
+  \begin{center}
+    \small \textit{Annotating underwater imagery is costly, but satellite and marine archives are abundant.}
+  \end{center}
   \vspace{0.05cm}
-  \footnotesize
-  Pretrain on abundant unlabeled data; adapt to seagrass mapping
-  with a much smaller set of labeled examples.\par
-}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Large Language Models\\{\footnotesize(e.g., ChatGPT, Gemini)}}
+        \centering
+        \textbf{Predict the next token}
+
+        \vspace{0.08cm}
+        Read previous words;\\
+        predict the next one: \textcolor{OceanTeal}{\textbf{?}}
+
+        \vspace{0.08cm}
+        \footnotesize
+        \textit{Training data:} enormous text corpora\\
+        collected from web, books, etc.
+      \end{block}
+    \end{column}
+
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Earth Observation Models\\{\footnotesize(e.g., Prithvi, TerraMind)}}
+        \centering
+        \textbf{Predict masked image patches}
+
+        \vspace{0.08cm}
+        Observe surrounding patches;\\
+        reconstruct the hidden region.
+
+        \vspace{0.08cm}
+        \footnotesize
+        \textit{Training data:} massive collections of\\
+        unlabeled satellite imagery.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.2cm}
+  \begin{center}
+    {\normalsize \textbf{\color{OceanDark}Self-supervised learning: learn representations from the data itself}}\par
+    \vspace{1.5pt}
+    {\footnotesize Pretrain on abundant unlabeled archives $\rightarrow$ adapt to seagrass with few labeled examples.\par}
+  \end{center}
 
 \end{frame}
 
@@ -448,8 +455,9 @@
     \item \textbf{Segment Anything (SAM)}\textsuperscript{\color{OceanTeal}[3]}
     \begin{itemize}
       \item \textit{Prompt-to-mask prediction}
-      \item Given a point or bounding box,
+      \item Given a point click or bounding box,
       predict the corresponding object mask.
+      \item \textit{Interactive annotation:} Accelerates manual seabed polygon tracing by $\sim 10\times$.
     \end{itemize}
   \end{itemize}
 \end{column}
@@ -467,23 +475,23 @@
 
 \begin{frame}{TerraMind in Practice: From Tiles to Spatial Embeddings}
   \centering
-  \includegraphics[height=3.5cm,keepaspectratio]
+  \includegraphics[height=2.45cm,keepaspectratio]
     {figures/terramind.png}
-  \vspace{-0.2cm}
+  \vspace{-0.1cm}
 
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \begin{block}{1. One Embedding per Tile}
         \footnotesize
-        \begin{itemize}\setlength{\itemsep}{3pt}
-          \item Input: a $224px\times224px$ satellite tile.
+        \begin{itemize}\setlength{\itemsep}{2pt}
+          \item Input: a $224 \times 224$\,px satellite tile.
           \item TerraMind produces a single
             \textbf{tile-level representation}
             $\mathbf{z}\in\mathbb{R}^{d}$.
           \item Feed $\mathbf{z}$ to a standard
             classifier (e.g., Random Forest or SVM).
         \end{itemize}
-        \vspace{0.05cm}
+        \vspace{0.04cm}
         \centering
         \textbf{Output:} tile-level habitat class
       \end{block}
@@ -492,7 +500,7 @@
     \begin{column}{0.50\textwidth}
       \begin{exampleblock}{2. One Embedding per Patch}
         \footnotesize
-        \begin{itemize}\setlength{\itemsep}{3pt}
+        \begin{itemize}\setlength{\itemsep}{2pt}
           \item The tile contains $14\times14=196$
             spatial patches ($16\times16$ pixels each).
           \item TerraMind provides an
@@ -500,7 +508,7 @@
           \item Train a classifier on each embedding
             to obtain a spatially detailed habitat map.
         \end{itemize}
-        \vspace{0.05cm}
+        \vspace{0.04cm}
         \centering
         \textbf{Output:} patch-level habitat predictions
       \end{exampleblock}
@@ -521,7 +529,7 @@
     \addlinespace[3pt]
     \textbf{Label Dependency} & High (per-pixel labels) & High (patches or dense masks) & Very low (few-shot / zero-shot) \\
     \addlinespace[3pt]
-    \textbf{Core Methodologies} & SVM, Random Forest, etc & CNNs, ViTs, U-Nets, etc & Masked Autoencoders, BioCLIP, SAM, etc \\
+    \textbf{Core Methodologies} & SVM, Random Forest & CNNs, U-Net, ViTs & Masked Autoencoders, SAM, BioCLIP \\
     \addlinespace[3pt]
     \textbf{Main Limitation} & Sensitive to noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
     \bottomrule
@@ -529,7 +537,7 @@
   }
   \end{center}
   \vspace{0.2cm}
-  \begin{exampleblock}{The common blindspot}
+  \begin{exampleblock}{The Common Blindspot}
     \centering
     All three eras share one critical vulnerability when taken out of the lab:
     
@@ -604,7 +612,7 @@
         \vspace{0.15cm}
         \footnotesize
 
-        \textit{Example:}  Accumulations of dead algae covering the bottom change how a living seagrass meadow looks.
+        \textit{Example:} Accumulations of dead algae covering the bottom change how a living seagrass meadow looks.
       \end{alertblock}
     \end{column}
     \begin{column}{0.32\textwidth}
@@ -629,33 +637,38 @@
 % SLIDE 17: Shift Vulnerability Across the Three Eras
 % ======================================================================
 \begin{frame}{How the Three Eras Behave Under Dataset Shift}
-  \begin{columns}[T]
+  \begin{columns}[T,onlytextwidth]
     \begin{column}{0.32\textwidth}
-      \textbf{Era 1: Pixel Models}
-      \begin{itemize}
-        \item \textbf{Extremely fragile} to Covariate Shift: any illumination or turbidity change pushes the 1D spectrum out of the decision boundary.
-        \item Requires constant per-scene manual re-calibration.
-      \end{itemize}
+      \begin{block}{Era 1: Pixel Models}
+        \scriptsize
+        \begin{itemize}\setlength{\itemsep}{2pt}
+          \item \textbf{Extremely fragile} to Covariate Shift: illumination or turbidity shifts push the 1D spectrum out of bounds.
+          \item Requires constant per-scene manual re-calibration.
+        \end{itemize}
+      \end{block}
     \end{column}
     \begin{column}{0.32\textwidth}
-      \textbf{Era 2: Deep Learning}
-      \begin{itemize}
-        \item Context rejects local noise, but CNNs often suffer from \textbf{texture / domain shortcut learning}.
-        \item Overfits to training water characteristics; silent, catastrophic failures on new unseen coasts.
-      \end{itemize}
+      \begin{exampleblock}{Era 2: Deep Learning}
+        \scriptsize
+        \begin{itemize}\setlength{\itemsep}{2pt}
+          \item Context rejects local noise, but CNNs suffer from \textbf{texture / domain shortcut learning}.
+          \item Overfits to training water conditions; silent failures on unseen coasts.
+        \end{itemize}
+      \end{exampleblock}
     \end{column}
     \begin{column}{0.32\textwidth}
-      \textbf{Era 3: Foundation Models}
-      \begin{itemize}
-        \item Pre-trained on diverse global distributions: greater \textbf{latent robustness}.
-        \item Contrastive pre-training enforces invariance to lighting and sensor quirks.
-        \item Can still drift under localized Concept Shifts.
-      \end{itemize}
+      \begin{tealblock}{Era 3: Foundation Models}
+        \scriptsize
+        \begin{itemize}\setlength{\itemsep}{2pt}
+          \item Pre-trained on global distributions: greater \textbf{latent robustness}.
+          \item Invariant to sensor quirks, but can still drift under localized Concept Shifts.
+        \end{itemize}
+      \end{tealblock}
     \end{column}
   \end{columns}
-  \vspace{0.3cm}
+  \vspace{0.25cm}
   \begin{center}
-    \textit{As models become more expressive, managing distribution shift becomes the true limiting factor for operational adoption.}
+    \small \textit{As models become more expressive, managing distribution shift becomes the true limiting factor for operational adoption.}
   \end{center}
 \end{frame}
 
@@ -679,13 +692,21 @@
 % SLIDE 20: Thank You / Q&A
 % ======================================================================
 \begin{frame}[standout]
-  \Large Thank You for Your Attention!\\[16pt]
-  \normalsize
-  \textbf{Artificial Intelligence Applied to the Mapping and Monitoring of Seagrass Meadows}\\[12pt]
-  \small
-  \textbf{Pablo González}$^{1}$ \quad \& \quad \textbf{Fernando García-González}$^{2}$\\[4pt]
-  $^{1}$AIC, Universidad de Oviedo \quad $^{2}$IEO-CSIC\\[16pt]
-  \textit{Questions \& Discussion}
+  \vspace{-0.35cm}
+  {\Large \textbf{Thank You for Your Attention!}}\\[6pt]
+  \small \textbf{Artificial Intelligence Applied to the Mapping and Monitoring of Seagrass Meadows}\\[3pt]
+  \footnotesize
+  \textbf{Pablo González}$^{1}$ \quad \& \quad \textbf{Fernando García-González}$^{2}$\\[1pt]
+  $^{1}$AIC, Universidad de Oviedo \quad $^{2}$IEO-CSIC\\[8pt]
+
+  \begin{center}
+    \setlength{\fboxsep}{4pt}%
+    \colorbox{white}{\qrcode[height=1.85cm]{https://github.com/pglez82/seagrass_ia_presentation/blob/master/presentation.pdf}}\\[4pt]
+    \footnotesize \textbf{\url{https://github.com/pglez82/seagrass_ia_presentation}}\\[1pt]
+    \scriptsize \textcolor{white!80}{Scan to access repository \& download presentation PDF}
+  \end{center}
+  \vspace{0.05cm}
+  \textit{\small Questions \& Discussion}
 \end{frame}
 
 \end{document}
