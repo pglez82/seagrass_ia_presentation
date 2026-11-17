@@ -336,14 +336,14 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{From Patch Classification to Segmentation (U-Net)}
+\begin{frame}{From Patch Classification to Semantic Segmentation (U-Net)}
   \centering
   \includegraphics[height=2.1cm, keepaspectratio]{figures/seagrass_segmentation_unet.png}
   
   \vspace{0.05cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \textbf{What Segmentation Solves:}
+      \textbf{What Semantic Segmentation Solves:}
       \begin{itemize}\setlength{\itemsep}{1pt}\small
         \item \textbf{End-to-End Dense Mapping:} Direct $H \times W$ tile $\rightarrow$ habitat mask in one pass (no sliding patches).
         \item \textbf{Full-Tile Spatial Context:} Captures meadow morphology, continuous edges, and patchiness.
@@ -529,7 +529,7 @@
     \addlinespace[3pt]
     \textbf{Label Dependency} & High (per-pixel labels) & High (patches or dense masks) & Very low (few-shot / zero-shot) \\
     \addlinespace[3pt]
-    \textbf{Core Methodologies} & SVM, Random Forest & CNNs, U-Net, ViTs & Masked Autoencoders, SAM, BioCLIP \\
+    \textbf{Examples} & SVM, Random Forest, ... & CNNs, U-Net, ViTs & Prithvi, Terravision, SAM, ... \\
     \addlinespace[3pt]
     \textbf{Main Limitation} & Sensitive to noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
     \bottomrule
