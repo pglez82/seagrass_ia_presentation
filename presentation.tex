@@ -111,7 +111,7 @@
       \vspace{0.2cm}
     \end{column}
   \end{columns}
-  \vspace{0.05cm}
+  \vspace{0.15cm}
   \centering \large \textit{How can AI turn sparse observation into continuous, operational monitoring?}
 
   \slidecite{%
@@ -239,8 +239,7 @@
     \begin{column}{0.5\textwidth}
       \textbf{Core Assumption:}
       \begin{itemize}\setlength{\itemsep}{1pt}\small
-        \item Each pixel vector $\mathbf{x} \in \mathbb{R}^B$ is an independent statistical sample.
-        \item Spatial coordinates and neighborhood context are ignored.
+        \item Each pixel vector $\mathbf{x} \in \mathbb{R}^B$ is an independent sample.
       \end{itemize}
       \vspace{0.1cm}
       \textbf{Advantages:}
@@ -250,17 +249,24 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Traditional Classifiers}
-        \begin{itemize}\setlength{\itemsep}{1pt}\small
-          \item \textbf{Multilayer Perceptron (MLP):} Feedforward network.
-          \item \textbf{Support Vector Machines (SVM):} Kernel hyperplanes.
-          \item \textbf{Random Forest (RF):} Decision tree ensemble baseline.
-        \end{itemize}
-      \end{block}
+      \textbf{Typical Classifiers:}
+      \begin{itemize}\setlength{\itemsep}{1pt}\small
+        \item \textbf{MLP:} feedforward neural network.
+        \item \textbf{SVM:} kernel-based margins.
+        \item \textbf{Random Forest:} decision tree ensemble, the standard baseline.
+      \end{itemize}
       \vspace{0.08cm}
       \small Standard pipeline: Water column correction\textsuperscript{\color{OceanTeal}[1]} + satellite bands $\rightarrow$ Random Forest pixel classification\textsuperscript{\color{OceanTeal}[2]}.
     \end{column}
   \end{columns}
+
+  \vspace{0.15cm}
+  \begin{alertblock}{Limitations}
+    \begin{itemize}\setlength{\itemsep}{1pt}\small
+      \item \textbf{Spatial blindness:} no texture or shape, so rock or algae is confused with seagrass; noisy, fragmented maps.
+      \item \textbf{Sensible to noise:} waves, sun glint and turbidity distort single spectra.
+    \end{itemize}
+  \end{alertblock}
 
   \slidecite{%
     \textsuperscript{[1]} Lyzenga, \textit{Passive remote sensing techniques for mapping water depth and bottom features}, Applied Optics, 17(3), pp.~379--383 (1978).\\[0.8pt]
@@ -268,50 +274,8 @@
   }
 \end{frame}
 
-
-
 % ======================================================================
-% SLIDE 7: Why Era 1 Hit a Ceiling (Limitations)
-% ======================================================================
-\begin{frame}{Why Era 1 Hit a Plateau: The Pixel Bottleneck}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.32\textwidth}
-      \begin{alertblock}{1. Spatial Blindness}
-        A single pixel has zero context:
-        \begin{itemize}
-          \item Ignores texture and shape, confusing rock or algae with seagrass.
-          \item Produces fragmented, noisy maps (salt-\&-pepper noise).
-        \end{itemize}
-      \end{alertblock}
-    \end{column}
-    
-    \begin{column}{0.32\textwidth}
-      \begin{alertblock}{2. Mixed Pixels}
-        At 10--20\,m resolution:
-        \begin{itemize}
-          \item Meadow edges mix seagrass with bare sand, mud, or rock.
-          \item Hard classifiers force an unrealistic binary (0/1) choice.
-        \end{itemize}
-      \end{alertblock}
-    \end{column}
-    
-    \begin{column}{0.32\textwidth}
-      \begin{alertblock}{3. Water Noise}
-        Single pixels are fragile:
-        \begin{itemize}
-          \item Waves, sun glint, and turbidity easily distort individual spectra.
-          \item Triggers false alarms of meadow loss or gain over time.
-        \end{itemize}
-      \end{alertblock}
-    \end{column}
-  \end{columns}
-
-  \vspace{0.25cm}
-  \centering \small \textit{Result: Fragmented maps that fail at meadow boundaries and require tedious manual cleaning.}\par
-\end{frame}
-
-% ======================================================================
-% SLIDE 8: Era 2: Why Spatial Context Matters (Pixel vs Patch)
+% SLIDE 6: Era 2: Why Spatial Context Matters (Pixel vs Patch)
 % ======================================================================
 \begin{frame}{Era 2: Why Spatial Context Matters --- From Pixels to Patches}
   \centering
@@ -546,7 +510,7 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 14: The Reality Check: Lab to Sea
+% SLIDE 12: The Reality Check: Lab to Sea
 % ======================================================================
 \begin{frame}{The Reality Check: Bringing AI from the Lab to the Sea}
   \begin{center}
@@ -582,7 +546,7 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 15: What is Dataset Shift?
+% SLIDE 13: What is Dataset Shift?
 % ======================================================================
 \begin{frame}{Dataset Shift in Seagrass Monitoring}
   \small
@@ -634,11 +598,11 @@
 
 
 % ======================================================================
-% SLIDE 17: Shift Vulnerability Across the Three Eras
+% SLIDE 14: Shift Vulnerability Across the Three Eras
 % ======================================================================
 \begin{frame}{How the Three Eras Behave Under Dataset Shift}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.33\textwidth}
       \begin{block}{Era 1: Pixel Models}
         \scriptsize
         \begin{itemize}\setlength{\itemsep}{2pt}
@@ -647,7 +611,7 @@
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.33\textwidth}
       \begin{exampleblock}{Era 2: Deep Learning}
         \scriptsize
         \begin{itemize}\setlength{\itemsep}{2pt}
@@ -656,7 +620,7 @@
         \end{itemize}
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.32\textwidth}
+    \begin{column}{0.33\textwidth}
       \begin{tealblock}{Era 3: Foundation Models}
         \scriptsize
         \begin{itemize}\setlength{\itemsep}{2pt}
@@ -674,7 +638,7 @@
 
 
 % ======================================================================
-% SLIDE 19: Conclusions & The Road Ahead
+% SLIDE 15: Conclusions & The Road Ahead
 % ======================================================================
 \begin{frame}{Conclusions \& The Road Ahead}
   \begin{enumerate}
@@ -689,7 +653,7 @@
 \end{frame}
 
 % ======================================================================
-% SLIDE 20: Thank You / Q&A
+% SLIDE 16: Thank You / Q&A
 % ======================================================================
 \begin{frame}[standout]
   \vspace{-0.35cm}
