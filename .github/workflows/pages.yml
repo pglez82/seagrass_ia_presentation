@@ -24,10 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare site
+        run: |
+          mkdir _site
+          cp presentation.pdf _site/
+
       - name: Upload PDF artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: presentation.pdf
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
