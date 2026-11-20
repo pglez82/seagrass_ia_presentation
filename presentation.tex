@@ -42,8 +42,8 @@
 
 % Adjust block padding so block text does not touch borders
 \makeatletter
-\setlength{\metropolis@blocksep}{1.1ex}
-\setlength{\metropolis@blockadjust}{0.3ex}
+\setlength{\metropolis@blocksep}{1.6ex}
+\setlength{\metropolis@blockadjust}{0.6ex}
 \makeatother
 
 % Teal block environment to match Era 3
@@ -605,7 +605,7 @@
     \begin{column}{0.33\textwidth}
       \begin{block}{Era 1: Pixel Models}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{2pt}
+        \begin{itemize}\setlength{\itemsep}{5pt}
           \item \textbf{Extremely fragile} to Covariate Shift: illumination or turbidity shifts push the 1D spectrum out of bounds.
           \item Requires constant per-scene manual re-calibration.
         \end{itemize}
@@ -614,7 +614,7 @@
     \begin{column}{0.33\textwidth}
       \begin{exampleblock}{Era 2: Deep Learning}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{2pt}
+        \begin{itemize}\setlength{\itemsep}{5pt}
           \item Context rejects local noise, but CNNs suffer from \textbf{texture / domain shortcut learning}.
           \item Overfits to training water conditions; silent failures on unseen coasts.
         \end{itemize}
@@ -623,7 +623,7 @@
     \begin{column}{0.33\textwidth}
       \begin{tealblock}{Era 3: Foundation Models}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{2pt}
+        \begin{itemize}\setlength{\itemsep}{5pt}
           \item Pre-trained on global distributions: greater \textbf{latent robustness}.
           \item Invariant to sensor quirks, but can still drift under localized Concept Shifts.
         \end{itemize}
