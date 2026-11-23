@@ -175,7 +175,7 @@
       $\bullet$ \textbf{Context:} None (isolated pixels)\\[2.5pt]
       $\bullet$ \textbf{Features:} Raw bands \& indices (NDVI)\\[2.5pt]
       $\bullet$ \textbf{Methods:} MLP, SVM, Random Forest\\[2.5pt]
-      $\bullet$ \textbf{Bottleneck:} Salt-\&-pepper noise; ignores spatial structure
+      $\bullet$ \textbf{Bottleneck:} noise, ignores spatial structure
     };
 
     % Era 2 Card
@@ -393,14 +393,14 @@
   \begin{itemize}
     \setlength{\itemsep}{0.08cm}
 
-    \item \textbf{Prithvi}\textsuperscript{\color{OceanTeal}[1]} / \textbf{SatMAE}
+    \item \textbf{Prithvi}\textsuperscript{\color{OceanTeal}[1]} / \textbf{SatMAE} \textsuperscript{\color{OceanTeal}[2]}
     \begin{itemize}
       \item \textit{Masked reconstruction}
       \item Reconstruct hidden satellite patches
       to learn spectral and spatial patterns.
     \end{itemize}
 
-    \item \textbf{TerraMind}\textsuperscript{\color{OceanTeal}[2]}
+    \item \textbf{TerraMind}\textsuperscript{\color{OceanTeal}[3]}
     \begin{itemize}
       \item \textit{Cross-modal prediction}
       \item Predict missing geospatial modalities
@@ -416,7 +416,7 @@
   \begin{itemize}
     \setlength{\itemsep}{0.08cm}
 
-    \item \textbf{Segment Anything (SAM)}\textsuperscript{\color{OceanTeal}[3]}
+    \item \textbf{Segment Anything (SAM)}\textsuperscript{\color{OceanTeal}[4]}
     \begin{itemize}
       \item \textit{Prompt-to-mask prediction}
       \item Given a point click or bounding box,
@@ -431,8 +431,9 @@
 
 \slidecite{%
   \textsuperscript{[1]} Jakubik et al.\ (NASA/IBM), \textit{Foundation Models for Generalist Geospatial AI}, arXiv:2310.18660 (2023).\\[0.8pt]
-  \textsuperscript{[2]} Jakubik et al., \textit{TerraMind: Large-Scale Generative Multimodality for Earth Observation}, IEEE/CVF ICCV, pp.~7383--7394 (2025).\\[0.8pt]
-  \textsuperscript{[3]} Kirillov et al.\ (Meta AI), \textit{Segment Anything}, IEEE/CVF ICCV, pp.~4015--4026 (2023).%
+  \textsuperscript{[2]} Cong, Yezhen, et al., \textit{Satmae: Pre-training transformers for temporal and multi-spectral satellite imagery}, Neurips (2022).\\[0.8pt]
+  \textsuperscript{[3]} Jakubik et al., \textit{TerraMind: Large-Scale Generative Multimodality for Earth Observation}, IEEE/CVF ICCV, pp.~7383--7394 (2025).\\[0.8pt]
+  \textsuperscript{[4]} Kirillov et al.\ (Meta AI), \textit{Segment Anything}, IEEE/CVF ICCV, pp.~4015--4026 (2023).%
 }
 
 \end{frame}
@@ -602,29 +603,29 @@
 % ======================================================================
 \begin{frame}{How the Three Eras Behave Under Dataset Shift}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.33\textwidth}
+    \begin{column}{0.32\textwidth}
       \begin{block}{Era 1: Pixel Models}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{5pt}
+        \begin{itemize}
           \item \textbf{Extremely fragile} to Covariate Shift: illumination or turbidity shifts push the 1D spectrum out of bounds.
           \item Requires constant per-scene manual re-calibration.
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.33\textwidth}
+    \begin{column}{0.32\textwidth}
       \begin{exampleblock}{Era 2: Deep Learning}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{5pt}
+        \begin{itemize}
           \item Context rejects local noise, but CNNs suffer from \textbf{texture / domain shortcut learning}.
           \item Overfits to training water conditions; silent failures on unseen coasts.
         \end{itemize}
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{tealblock}{Era 3: Foundation Models}
+    \begin{column}{0.32\textwidth}
+      \begin{tealblock}{Era 3: Found. Models}
         \scriptsize
-        \begin{itemize}\setlength{\itemsep}{5pt}
-          \item Pre-trained on global distributions: greater \textbf{latent robustness}.
+        \begin{itemize}
+          \item Pre-trained on abundant and diverse data with greater \textbf{latent robustness}.
           \item Invariant to sensor quirks, but can still drift under localized Concept Shifts.
         \end{itemize}
       \end{tealblock}
