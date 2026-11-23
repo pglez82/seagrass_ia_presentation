@@ -96,7 +96,7 @@
     \begin{column}{0.54\textwidth}
       \begin{itemize}
         \item \textbf{What is this talk about?} Understanding the role of AI in seagrass monitoring.
-        \item \textbf{From the past to the future:} Evolution of AI in seagrass mapping: from old fashioned techniques to modern approaches.
+        \item \textbf{From the past to the future:} Evolution of AI in seagrass mapping: from old-fashioned techniques to modern approaches.
         \item \textbf{Are there any challenges?} Yes, there are!
       \end{itemize}
       \vspace{0.1cm}
@@ -115,7 +115,7 @@
   \centering \large \textit{How can AI turn sparse observation into continuous, operational monitoring?}
 
   \slidecite{%
-    \textsuperscript{[1]} Ruiz et al.\ (Eds.), \textit{Atlas de las praderas de fanerógamas marinas de España}, IEO/IEL/UICN, Murcia-Palma de Mallorca (2015).%
+    \textsuperscript{[1]} Ruiz et al.\ (Eds.), \textit{Atlas de las praderas marinas de España (1ª ed.)}, IEO/IEL/UICN, Murcia-Palma de Mallorca (2015).%
   }
 \end{frame}
 
@@ -133,7 +133,7 @@
       \textbf{So many sources of data:}
       \begin{itemize}
         \item \textbf{Satellites (Sentinel-2, Landsat):}\newline
-        {\footnotesize Global or nearly global coverage; 5-day revisit; 10\,m resolution; historical archives ($>30$ yrs).}
+        {\footnotesize Global or nearly global coverage; 5-day revisit (Sentinel-2); 10--30\,m resolution; archives spanning $>30$ yrs (Landsat).}
         \item \textbf{Drones (UAVs):}\newline
         {\footnotesize Centimetric detail (1--5\,cm); rapid deployment; local surveys.}
         \item \textbf{Underwater Vision (ROV/AUV/Drop-cam):}\newline
@@ -264,13 +264,13 @@
   \begin{alertblock}{Limitations}
     \begin{itemize}\setlength{\itemsep}{1pt}\small
       \item \textbf{Spatial blindness:} no texture or shape, so rock or algae is confused with seagrass; noisy, fragmented maps.
-      \item \textbf{Sensible to noise:} waves, sun glint and turbidity distort single spectra.
+      \item \textbf{Sensitive to noise:} waves, sun glint and turbidity distort single spectra.
     \end{itemize}
   \end{alertblock}
 
   \slidecite{%
     \textsuperscript{[1]} Lyzenga, \textit{Passive remote sensing techniques for mapping water depth and bottom features}, Applied Optics, 17(3), pp.~379--383 (1978).\\[0.8pt]
-    \textsuperscript{[2]} Traganos \& Reinartz, \textit{Mapping Mediterranean seagrasses with Sentinel-2 imagery}, Frontiers in Plant Science, 9:1398 (2018).%
+    \textsuperscript{[2]} Traganos \& Reinartz, \textit{Mapping Mediterranean seagrasses with Sentinel-2 imagery}, Marine Pollution Bulletin, 134, pp.~197--209 (2018).%
   }
 \end{frame}
 
@@ -421,7 +421,7 @@
       \item \textit{Prompt-to-mask prediction}
       \item Given a point click or bounding box,
       predict the corresponding object mask.
-      \item \textit{Interactive annotation:} Accelerates manual seabed polygon tracing by $\sim 10\times$.
+      \item \textit{Interactive annotation:} Accelerates manual seabed polygon tracing by $\sim 10\times$\textsuperscript{\color{OceanTeal}[5]}.
       \item Application example: \textbf{TagLab} (semi-automatic annotation software).
     \end{itemize}
   \end{itemize}
@@ -434,7 +434,8 @@
   \textsuperscript{[1]} Jakubik et al.\ (NASA/IBM), \textit{Foundation Models for Generalist Geospatial AI}, arXiv:2310.18660 (2023).\\[0.8pt]
   \textsuperscript{[2]} Cong, Yezhen, et al., \textit{Satmae: Pre-training transformers for temporal and multi-spectral satellite imagery}, Neurips (2022).\\[0.8pt]
   \textsuperscript{[3]} Jakubik et al., \textit{TerraMind: Large-Scale Generative Multimodality for Earth Observation}, IEEE/CVF ICCV, pp.~7383--7394 (2025).\\[0.8pt]
-  \textsuperscript{[4]} Kirillov et al.\ (Meta AI), \textit{Segment Anything}, IEEE/CVF ICCV, pp.~4015--4026 (2023).%
+  \textsuperscript{[4]} Kirillov et al.\ (Meta AI), \textit{Segment Anything}, IEEE/CVF ICCV, pp.~4015--4026 (2023).\\[0.8pt]
+  \textsuperscript{[5]} Pavoni et al.\ (CNR-ISTI), \textit{TagLab: AI-assisted annotation for the fast and accurate semantic segmentation of coral reef orthoimages}, Journal of Field Robotics, 39(3), pp.~246--262 (2022).%
 }
 
 \end{frame}
@@ -495,7 +496,7 @@
     \addlinespace[3pt]
     \textbf{Label Dependency} & High (per-pixel labels) & High (patches or dense masks) & Very low (few-shot / zero-shot) \\
     \addlinespace[3pt]
-    \textbf{Examples} & SVM, Random Forest, ... & CNNs, U-Net, ViTs & Prithvi, Terravision, SAM, ... \\
+    \textbf{Examples} & SVM, Random Forest, ... & CNNs, U-Net, ViTs & Prithvi, TerraMind, SAM, ... \\
     \addlinespace[3pt]
     \textbf{Main Limitation} & Sensitive to noise, no context & Data-hungry; overfitting on small surveys & Pre-training compute \\
     \bottomrule
