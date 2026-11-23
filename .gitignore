@@ -17,7 +17,6 @@
 *.idx
 *.ilg
 .log
-*.pdf
-!presentation.pdf
+presentation.pdf
 slides_preview
 *.xdv

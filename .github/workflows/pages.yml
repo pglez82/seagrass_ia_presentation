@@ -1,8 +1,12 @@
-name: Deploy presentation PDF to GitHub Pages
+name: Compile & deploy presentation PDF to GitHub Pages
 
 on:
   push:
     branches: [master]
+    paths:
+      - 'presentation.tex'
+      - 'figures/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -15,14 +19,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  compile:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install TeX Live packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-pictures \
+            texlive-fonts-recommended
+
+      - name: Compile with latexmk
+        run: |
+          latexmk -pdf -interaction=nonstopmode -halt-on-error presentation.tex
+          ls -lh presentation.pdf
 
       - name: Prepare site
         run: |
@@ -34,6 +50,13 @@ jobs:
         with:
           path: _site
 
+  deploy:
+    needs: compile
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
